@@ -1,9 +1,11 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +32,7 @@ namespace CSCE3513_LaserTag_Project.SQL
 
         public static NpgsqlConnection CreateSQLConnection()
         {
-            var cs = $"Host={host};Username={username};Password={password};Database={database};SSL Mode=Require;Trust Server Certificate=true";
+            var cs = $"Host={host};Username={username};Password={password};Database={database};SSL Mode=Require;Trust Server Certificate=true; EntityAdminDatabase={database}";
             Console.WriteLine(cs);
 
             
@@ -51,6 +53,33 @@ namespace CSCE3513_LaserTag_Project.SQL
             {
                 Console.WriteLine(ex);
             }
+        }
+        
+        public async Task addPlayer(string id, string name, int score, bool save = false)
+        {
+            PlayerTable t = new PlayerTable();
+            t.playerID = id;
+            t.name = name;
+            t.score = score;
+
+            Players.Add(t);
+
+
+
+
+            if (save)
+                await SaveChangesAsync();
+            
+        }
+
+        public void displayPlayers()
+        {
+
+            foreach(var player in Players)
+            {
+                Console.WriteLine($"Name: {player.name} ID:{player.playerID} Score:{player.score}");
+            }
+
         }
 
     }

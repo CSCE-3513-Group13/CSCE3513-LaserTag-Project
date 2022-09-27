@@ -21,8 +21,6 @@ namespace CSCE3513_LaserTag_Project.Views
     public partial class LaunchScreen : Window
     {
         private static Window Window;
-
-
         public LaunchScreen()
         {
             //Start this window in the center of the screen

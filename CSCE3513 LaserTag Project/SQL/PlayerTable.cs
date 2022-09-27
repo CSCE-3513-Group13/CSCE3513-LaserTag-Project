@@ -13,14 +13,14 @@ namespace CSCE3513_LaserTag_Project.SQL
     public class PlayerTable
     {
 
-        [Key, Column("playerID")]
-        public int Id { get; set; }
+        [Key, Column("playerid")]
+        public string playerID { get; set; } = "";
 
-        [Key, Column("playerName")]
-        public string name { get; set; }
+        [Column("playername")]
+        public string name { get; set; } = "Boss2";
 
-        [Key, Column("score")]
-        public int score { get; set; }
+        [Column("score")]
+        public int score { get; set; } = 1;
 
 
     }

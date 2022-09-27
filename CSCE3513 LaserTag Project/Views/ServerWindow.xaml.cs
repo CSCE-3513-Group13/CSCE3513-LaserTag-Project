@@ -20,21 +20,21 @@ namespace CSCE3513_LaserTag_Project.Views
     /// </summary>
     public partial class ServerWindow : Window
     {
-
-
+        private SQLConnection conn;
+        //This is the main entry point for server code
         public ServerWindow()
         {
             InitializeComponent();
 
             //Use this to run when window starts
-
             Console.WriteLine("Started Server");
             serverStarted();
         }
 
         public void serverStarted()
         {
-            SQLConnection conn = new SQLConnection();
+            //Below is the main SQL connection 
+            conn = new SQLConnection();
         }
     }
 }
