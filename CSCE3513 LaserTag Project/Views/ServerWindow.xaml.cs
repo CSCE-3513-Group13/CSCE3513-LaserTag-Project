@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCE3513_LaserTag_Project.SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,21 @@ namespace CSCE3513_LaserTag_Project.Views
     /// </summary>
     public partial class ServerWindow : Window
     {
+
+
         public ServerWindow()
         {
             InitializeComponent();
+
+            //Use this to run when window starts
+
+            Console.WriteLine("Started Server");
+            serverStarted();
+        }
+
+        public void serverStarted()
+        {
+            SQLConnection conn = new SQLConnection();
         }
     }
 }
