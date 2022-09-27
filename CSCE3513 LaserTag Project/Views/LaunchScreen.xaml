@@ -29,8 +29,8 @@
 
         <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="3"/>
 
-        <Button Grid.Row="3" Grid.Column="0" Margin="6" ToolTip="This button lunaches the server mode for clients to connect to">Server</Button>
-        <Button Grid.Row="3" Grid.Column="1" Margin="6" ToolTip="Client mode if you want to join a launched server">Client</Button>
+        <Button Grid.Row="3" Grid.Column="0" Margin="6" ToolTip="This button lunaches the server mode for clients to connect to" Click="ServerButton_Click">Server</Button>
+        <Button Grid.Row="3" Grid.Column="1" Margin="6" ToolTip="Client mode if you want to join a launched server" Click="ClientButton_Click">Client</Button>
 
 
     </Grid>

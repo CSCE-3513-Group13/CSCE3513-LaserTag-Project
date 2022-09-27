@@ -20,12 +20,46 @@ namespace CSCE3513_LaserTag_Project.Views
     /// </summary>
     public partial class LaunchScreen : Window
     {
+        private static Window Window;
+
+
         public LaunchScreen()
         {
             //Start this window in the center of the screen
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
            
             InitializeComponent();
+        }
+
+
+        //This event fires when user presses client button
+        private void ClientButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Create client window
+            //Close this window
+
+            Window = new ClientWindow();
+            
+
+
+            //Closes window
+            this.Close();
+            Window.ShowDialog();
+
+        }
+
+        //This event fires when user presses server button
+        private void ServerButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Create server window
+            //Close this window
+
+            Window = new ServerWindow();
+
+            this.Close();
+            Window.ShowDialog();
+
+           
         }
     }
 }
