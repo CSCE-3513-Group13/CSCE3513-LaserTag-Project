@@ -36,7 +36,7 @@ namespace CSCE3513_LaserTag_Project.Views
             //Create client window
             //Close this window
 
-            Window = new ClientWindow();
+            Window = new ClientLoginWindow();
             
 
 

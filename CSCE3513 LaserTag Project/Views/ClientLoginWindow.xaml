@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSCE3513_LaserTag_Project.Views"
         mc:Ignorable="d"
-        Title="ClientLoginWindow" Height="450" Width="800">
+        Title="LaserTag Game" Height="225" Width="400">
     <Grid>
-        
+
+        <GroupBox Header="Client Login">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+
+                <RadioButton x:Name="IsLogin" Grid.Column="0" Margin="3" HorizontalAlignment="Center" IsChecked="True" Checked="RadioButton_Checked">Login</RadioButton>
+                <RadioButton Grid.Column="1" Margin="3" HorizontalAlignment="Center" Checked="RadioButton_Checked">New User</RadioButton>
+                <Separator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="3"/>
+
+                <Label x:Name="BoxPrompt" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Center">UserID: </Label>
+                <TextBox x:Name="BoxInput" Grid.Column="1" Grid.Row="2" Margin="3"></TextBox>
+
+                <Button x:Name="UIButton" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="3" Click="UIButton_Click">Login</Button>
+
+
+                <Label Grid.Row="4" Grid.Column="0" Margin="3"></Label>
+            </Grid>
+        </GroupBox>
+
+
     </Grid>
 </Window>
