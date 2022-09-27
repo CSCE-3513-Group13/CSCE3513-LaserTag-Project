@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace CSCE3513_LaserTag_Project
+namespace Views.CSCE3513_LaserTag_Project
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
