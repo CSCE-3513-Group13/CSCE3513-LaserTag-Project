@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CSCE3513_LaserTag_Project.Messages
 {
     /*  This is a protocontract. This class lets us assign values and serialize them over byte[]
-     * 
+     *  Protobuff allows us to easily serialize and deserialize these classes
      * 
      */
 

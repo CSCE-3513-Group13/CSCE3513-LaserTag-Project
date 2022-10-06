@@ -39,8 +39,7 @@ namespace CSCE3513_LaserTag_Project.Networking
 
             try
             {
-
-                Console.WriteLine("Waiting for broadcast");
+                Console.WriteLine("Starting Network Listener");
 
                 UdpState s = new UdpState();
                 s.e = endpoint;
