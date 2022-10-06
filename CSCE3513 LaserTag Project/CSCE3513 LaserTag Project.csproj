@@ -115,6 +115,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Messages\LoginRequest.cs" />
+    <Compile Include="Messages\newPlayerActivated.cs" />
     <Compile Include="Networking\NetworkSender.cs" />
     <Compile Include="Networking\NetworkListener.cs" />
     <Compile Include="Networking\ServerNetworking.cs" />
