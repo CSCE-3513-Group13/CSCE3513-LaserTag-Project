@@ -116,6 +116,7 @@
     </ApplicationDefinition>
     <Compile Include="Messages\LoginRequest.cs" />
     <Compile Include="Networking\NetworkSender.cs" />
+    <Compile Include="Networking\NetworkListener.cs" />
     <Compile Include="Networking\ServerNetworking.cs" />
     <Compile Include="SQL\EntityFramework.cs" />
     <Compile Include="SQL\PlayerTable.cs" />
