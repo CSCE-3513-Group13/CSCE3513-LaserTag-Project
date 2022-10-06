@@ -20,8 +20,6 @@ namespace CSCE3513_LaserTag_Project.SQL
 
             Task lasertagSQLConnection = new Task(() => this.MainAsync().GetAwaiter().GetResult());
             lasertagSQLConnection.Start();
-
-
         }
 
 

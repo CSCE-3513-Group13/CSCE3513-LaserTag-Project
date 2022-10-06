@@ -21,15 +21,8 @@ namespace CSCE3513_LaserTag_Project.Networking
 
         public UDPNetworking()
         {
-
             Task.Run(() => recieveMessages());
-
-
-
-
             sendMessage("Sending to server");
-            
-
         }
 
         public void recieveMessages()
