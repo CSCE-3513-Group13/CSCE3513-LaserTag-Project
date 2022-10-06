@@ -114,6 +114,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Messages\GameState.cs" />
     <Compile Include="Messages\LoginRequest.cs" />
     <Compile Include="Messages\newPlayerActivated.cs" />
     <Compile Include="Networking\NetworkSender.cs" />
