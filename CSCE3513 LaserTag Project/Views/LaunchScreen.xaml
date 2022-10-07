@@ -10,6 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
@@ -18,20 +19,20 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="3" HorizontalAlignment="Center" Width="300">
+        <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="3" HorizontalAlignment="Center" Width="300">
             <Image.Source>
                 <BitmapImage DecodePixelWidth="350" UriSource="/Data/LaserTag_Logo.jpg" />
             </Image.Source>
         </Image>
         
         <!-- <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="3" HorizontalAlignment="Center"> {Insert logo}</Label> -->
-        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="3" HorizontalAlignment="Center">Please select if you are a server or client:</Label>
+        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="3" HorizontalAlignment="Center">Please select if you are a server or client:</Label>
 
-        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="3"/>
+        <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="3"/>
 
         <Button Grid.Row="3" Grid.Column="0" Margin="6" ToolTip="This button lunaches the server mode for clients to connect to" Click="ServerButton_Click">Server</Button>
         <Button Grid.Row="3" Grid.Column="1" Margin="6" ToolTip="Client mode if you want to join a launched server" Click="ClientButton_Click">Client</Button>
-
+        <Button Grid.Row="3" Grid.Column="2" Margin="6" ToolTip="debug mode" Click="Button_Click">Debug</Button>
 
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
 ﻿using CSCE3513_LaserTag_Project.Messages;
+using CSCE3513_LaserTag_Project.Networking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,16 @@ namespace CSCE3513_LaserTag_Project.Views
     public partial class ClientLoginWindow : Window
     {
         private bool initilized = false;
+        private NetworkListener listener;
 
         public ClientLoginWindow()
         {
             InitializeComponent();
 
             initilized = true;
+
+
+            listener = new NetworkListener(600);
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)

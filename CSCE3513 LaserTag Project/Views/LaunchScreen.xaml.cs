@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Views.CSCE3513_LaserTag_Project;
 
 namespace CSCE3513_LaserTag_Project.Views
 {
@@ -58,6 +59,14 @@ namespace CSCE3513_LaserTag_Project.Views
             Window.ShowDialog();
 
            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Window = new MainWindow();
+
+            this.Close();
+            Window.ShowDialog();
         }
     }
 }
