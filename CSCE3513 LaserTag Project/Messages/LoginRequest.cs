@@ -28,5 +28,14 @@ namespace CSCE3513_LaserTag_Project.Messages
 
         [ProtoMember(400)]
         public bool foundAccount;
+
+        public LoginRequest() { }
+
+        public LoginRequest(string playerID, string username, string score)
+        {
+            this.playerID = playerID;
+            this.username = username;
+            this.score = score;
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace CSCE3513_LaserTag_Project.Views
     {
         private bool initilized = false;
         private NetworkListener listener;
+        private NetworkSender Sender;
 
         public ClientLoginWindow()
         {
@@ -30,8 +31,10 @@ namespace CSCE3513_LaserTag_Project.Views
 
             initilized = true;
 
-
-            listener = new NetworkListener(600);
+            //Client needs to send data to server
+            
+            listener = new NetworkListener(clientRecieved);
+            Sender = new NetworkSender();
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
@@ -68,7 +71,32 @@ namespace CSCE3513_LaserTag_Project.Views
                 r.username = BoxInput.Text;
             }
 
+            //Send message to server to verify login request
+            MessageManager.sendMessage(r, MessageManager.messageType.LoginRequest);
+        }
 
+
+
+        private void clientRecieved(MessageManager data)
+        {
+            Console.WriteLine($"ClientRecieved: {data.type}");
+            switch (data.type)
+            {
+                case MessageManager.messageType.LoginRequest:
+                    
+                    break;
+
+                case MessageManager.messageType.GameState:
+
+                    break;
+
+
+
+                default:
+                    Console.WriteLine("Unkown network type!");
+                    break;
+
+            }
         }
     }
 }

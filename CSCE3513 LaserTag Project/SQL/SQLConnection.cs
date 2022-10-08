@@ -37,7 +37,7 @@ namespace CSCE3513_LaserTag_Project.SQL
                 
                 await framework.Count();
 
-                await framework.addPlayer("12345", "Boss", 100, true);
+                //await framework.addPlayer("12345", "Boss", 100, true);
                 framework.displayPlayers();
 
                 await framework.Count();

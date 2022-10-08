@@ -116,6 +116,7 @@
     </ApplicationDefinition>
     <Compile Include="Messages\GameState.cs" />
     <Compile Include="Messages\LoginRequest.cs" />
+    <Compile Include="Messages\MessageManager.cs" />
     <Compile Include="Messages\newPlayerActivated.cs" />
     <Compile Include="Networking\NetworkSender.cs" />
     <Compile Include="Networking\NetworkListener.cs" />
@@ -127,9 +128,6 @@
     <Compile Include="Views\ClientLoginWindow.xaml.cs">
       <DependentUpon>ClientLoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClientNewUser.xaml.cs">
-      <DependentUpon>ClientNewUser.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ClientWindow.xaml.cs">
       <DependentUpon>ClientWindow.xaml</DependentUpon>
     </Compile>
@@ -137,10 +135,6 @@
       <DependentUpon>ServerWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ClientLoginWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClientNewUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

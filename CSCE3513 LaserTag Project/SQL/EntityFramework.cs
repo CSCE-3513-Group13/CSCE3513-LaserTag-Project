@@ -16,29 +16,37 @@ namespace CSCE3513_LaserTag_Project.SQL
     [DbConfigurationType(typeof(NpgSqlConfiguration))]
     public class EntityFramework : DbContext
     {
-        private static int port = 5432;
-        private static string host = "ec2-54-159-175-38.compute-1.amazonaws.com";
-        private static string username = "asznpiiacgjekz";
-        private static string password = "372a21af2a53d448a847e6c03664e54c0180dbb7858bd5b8719b0c29a3110ea2";
-        private static string database = "da120dr1sr0bll";
+        private static readonly int port = 5432;
+        private static readonly string host = "ec2-54-159-175-38.compute-1.amazonaws.com";
+        private static readonly string username = "asznpiiacgjekz";
+        private static readonly string password = "372a21af2a53d448a847e6c03664e54c0180dbb7858bd5b8719b0c29a3110ea2";
+        private static readonly string database = "da120dr1sr0bll";
 
-        //
+
+        //Construct arg for our entityFramework
         public EntityFramework(DbConnection existingConnection, bool contextOwnsConnection) : base(existingConnection, contextOwnsConnection) { }
-
 
 
         //We can define databases here
         public DbSet<PlayerTable> Players { get; set; }
 
+
+
+
+
+
+
+
         public static NpgsqlConnection CreateSQLConnection()
         {
             var cs = $"Host={host};Username={username};Password={password};Database={database};SSL Mode=Require;Trust Server Certificate=true; EntityAdminDatabase={database}";
-            Console.WriteLine(cs);
-
             
+            //Display connection string to console
+            Console.WriteLine(cs);
 
             return new NpgsqlConnection(cs);
         }
+
 
         public async Task Count()
         {
@@ -55,6 +63,7 @@ namespace CSCE3513_LaserTag_Project.SQL
             }
         }
         
+
         public async Task addPlayer(string id, string name, int score, bool save = false)
         {
             PlayerTable t = new PlayerTable();
@@ -71,6 +80,7 @@ namespace CSCE3513_LaserTag_Project.SQL
                 await SaveChangesAsync();
             
         }
+
 
         public void displayPlayers()
         {
