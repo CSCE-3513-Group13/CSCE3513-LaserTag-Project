@@ -34,7 +34,7 @@
                 <Button x:Name="UIButton" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="3" Click="UIButton_Click">Login</Button>
 
 
-                <Label Grid.Row="4" Grid.Column="0" Margin="3"></Label>
+                <Label x:Name="UserResponse" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="3"></Label>
             </Grid>
         </GroupBox>
 

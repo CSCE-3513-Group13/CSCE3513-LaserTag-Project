@@ -14,27 +14,25 @@ namespace CSCE3513_LaserTag_Project.Networking
         private static int _braodcasePort = 7500;
 
         private static IPAddress add = IPAddress.Parse("127.0.0.1");
-        private IPEndPoint endpoint;
+        //private IPEndPoint endpoint;
         private Socket s;
 
         public static NetworkSender Sender { get; private set; }
 
 
-        public NetworkSender(int targetPort = 7500)
+        public NetworkSender()
         {
-            _listenerPort = targetPort;
-            endpoint = new IPEndPoint(add, _listenerPort);
             s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
             Sender = this;
         }
 
 
 
-        public void sendMessage(byte[] msg)
+        public void sendMessage(byte[] msg, int targetport = 7500)
         {
+            IPEndPoint endpoint = new IPEndPoint(add, targetport);
             s.SendTo(msg, endpoint);
-            Console.WriteLine($"Sent {msg.Count()} bytes to destination!");
+            Console.WriteLine($"Sent {msg.Count()} bytes to {targetport}!");
         }
 
 

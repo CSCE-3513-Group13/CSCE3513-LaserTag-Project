@@ -45,11 +45,12 @@ namespace CSCE3513_LaserTag_Project.Messages
         }
 
 
-        public static void sendMessage<T>(T data, messageType type)
+        public static void sendMessage<T>(T data, messageType type, int port = 7500)
         {
+            Console.WriteLine($"Sending data on {type} to port {port}");
             //Always send listener port
             MessageManager m = new MessageManager(type, NetworkListener.listenerPort, Utils.Utilities.Serialize(data));
-            NetworkSender.Sender.sendMessage(Utils.Utilities.Serialize(m));
+            NetworkSender.Sender.sendMessage(Utils.Utilities.Serialize(m), port);
         }
 
 

@@ -20,6 +20,9 @@ namespace CSCE3513_LaserTag_Project.Messages
         [ProtoMember(100)]
         public string playerID;
 
+        [ProtoMember(110)]
+        public bool loggingIn = true; //lets server know if we are attempting login in, or create new user
+
         [ProtoMember(200)]
         public string username;
 
@@ -28,6 +31,9 @@ namespace CSCE3513_LaserTag_Project.Messages
 
         [ProtoMember(400)]
         public bool foundAccount;
+
+        [ProtoMember(500)]
+        public string response;
 
         public LoginRequest() { }
 

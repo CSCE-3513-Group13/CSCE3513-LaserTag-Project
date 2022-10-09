@@ -62,13 +62,19 @@ namespace CSCE3513_LaserTag_Project.Views
             //This runs when user clicks that button
             LoginRequest r = new LoginRequest();
 
+            //No need to send response if box is empty
+            if (string.IsNullOrEmpty(BoxInput.Text))
+                return;
+
             if (IsLogin.IsChecked.Value)
             {
                 r.playerID = BoxInput.Text;
+                r.loggingIn = true;
             }
             else
             {
                 r.username = BoxInput.Text;
+                r.loggingIn = false;
             }
 
             //Send message to server to verify login request
@@ -83,7 +89,7 @@ namespace CSCE3513_LaserTag_Project.Views
             switch (data.type)
             {
                 case MessageManager.messageType.LoginRequest:
-                    
+                    loginRequest(data);
                     break;
 
                 case MessageManager.messageType.GameState:
@@ -96,6 +102,26 @@ namespace CSCE3513_LaserTag_Project.Views
                     Console.WriteLine("Unkown network type!");
                     break;
 
+            }
+        }
+
+        private void loginRequest(MessageManager data)
+        {
+            LoginRequest r = Utils.Utilities.Deserialize<LoginRequest>(data.messageData);
+            Console.WriteLine(r.loggingIn);
+            if (r.loggingIn == true && !r.foundAccount)
+            {
+                Dispatcher.Invoke(() => UserResponse.Content = r.response);
+            }
+            else if(r.loggingIn == true && r.foundAccount)
+            {
+                Dispatcher.Invoke(() => UserResponse.Content = "Logging in!");
+            }else if(r.loggingIn == false && r.foundAccount)
+            {
+                Dispatcher.Invoke(() => UserResponse.Content = "Username already taken!");
+            }else if(r.loggingIn == false && !r.foundAccount)
+            {
+                Dispatcher.Invoke(() => UserResponse.Content = "Logging in!");
             }
         }
     }

@@ -69,5 +69,19 @@ namespace CSCE3513_LaserTag_Project.SQL
         }
 
 
+        //Loops through our SQL database to see if we have the player
+        public bool doesPlayerExsist(string id, out PlayerTable player)
+        {
+            player = null;
+            foreach (var p in framework.Players)
+            {
+                if (p.playerID.Equals(id))
+                    return true;
+            }
+
+            return false;   
+        }
+
+
     }
 }
