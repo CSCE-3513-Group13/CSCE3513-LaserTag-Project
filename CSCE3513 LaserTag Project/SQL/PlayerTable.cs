@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CSCE3513_LaserTag_Project.SQL
 {
-
+    //postgres://asznpiiacgjekz:372a21af2a53d448a847e6c03664e54c0180dbb7858bd5b8719b0c29a3110ea2@ec2-54-159-175-38.compute-1.amazonaws.com:5432/da120dr1sr0bll
     [Table("playertable", Schema = "public")]
     public class PlayerTable
     {
