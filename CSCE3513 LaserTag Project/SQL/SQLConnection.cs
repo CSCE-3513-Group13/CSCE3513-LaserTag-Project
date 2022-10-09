@@ -37,7 +37,8 @@ namespace CSCE3513_LaserTag_Project.SQL
                 
                 await framework.Count();
 
-                //await framework.addPlayer("12345", "Boss", 100, true);
+                //await framework.addPlayer("123", "Quick","Adrian","Gould", 100, true);
+                //await framework.addPlayer("1234", "Ghost", "Person", "Gould", 120, true);
                 framework.displayPlayers();
 
                 await framework.Count();
@@ -52,8 +53,10 @@ namespace CSCE3513_LaserTag_Project.SQL
         public async Task createTable()
         {
             string tableCreate = $@"CREATE TABLE IF NOT EXISTS playertable(
-                  playerid varchar(20) NOT NULL,
-                  playername varchar(20) NOT NULL,
+                  playerid varchar(30) NOT NULL,
+                  codename varchar(30) NOT NULL,
+                  first_name VARCHAR(30) NOT NULL,
+                  last_name VARCHAR(30) NOT NULL,
                   score numeric NOT NULL DEFAULT 0,
                   PRIMARY KEY(playerid)
                 )";

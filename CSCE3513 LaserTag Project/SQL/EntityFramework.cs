@@ -64,11 +64,13 @@ namespace CSCE3513_LaserTag_Project.SQL
         }
         
 
-        public async Task addPlayer(string id, string name, int score, bool save = false)
+        public async Task addPlayer(string id, string codename, string firstname, string lastname, int score, bool save = false)
         {
             PlayerTable t = new PlayerTable();
             t.playerID = id;
-            t.name = name;
+            t.codename = codename;
+            t.first_name = firstname;
+            t.last_name = lastname;
             t.score = score;
 
             Players.Add(t);
@@ -87,7 +89,7 @@ namespace CSCE3513_LaserTag_Project.SQL
 
             foreach(var player in Players)
             {
-                Console.WriteLine($"Name: {player.name} ID:{player.playerID} Score:{player.score}");
+                Console.WriteLine($"CodeName: {player.codename} First:{player.first_name} Last:{player.last_name} ID:{player.playerID} Score:{player.score}");
             }
 
         }
