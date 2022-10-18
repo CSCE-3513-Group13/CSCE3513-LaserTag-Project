@@ -92,7 +92,7 @@ namespace CSCE3513_LaserTag_Project.Views
 
             } else if (r.loggingIn && foundAccount)
             {
-                r.response = $"Welcome {r.username}! F:{tableOut.first_name} L:{tableOut.last_name}";
+                r.response = $"Welcome {tableOut.codename}! F:{tableOut.first_name} L:{tableOut.last_name}";
             }
             else if(!r.loggingIn)
             {
