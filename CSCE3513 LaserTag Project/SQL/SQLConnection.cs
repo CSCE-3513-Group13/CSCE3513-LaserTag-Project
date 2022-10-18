@@ -79,7 +79,10 @@ namespace CSCE3513_LaserTag_Project.SQL
             foreach (var p in framework.Players)
             {
                 if (p.playerID.Equals(id))
+                {
+                    player = p;
                     return true;
+                }
             }
 
             return false;   
