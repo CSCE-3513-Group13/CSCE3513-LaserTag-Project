@@ -185,6 +185,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="bin\Debug\CSCE3513 LaserTag Project.exe.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -195,10 +196,48 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Release\" />
     <Folder Include="Configs\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Data\LaserTag_Logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\CSCE3513 LaserTag Project.exe" />
+    <Content Include="bin\Debug\CSCE3513 LaserTag Project.pdb" />
+    <Content Include="bin\Debug\EntityFramework.dll" />
+    <Content Include="bin\Debug\EntityFramework.SqlServer.dll" />
+    <Resource Include="bin\Debug\EntityFramework.SqlServer.xml" />
+    <Resource Include="bin\Debug\EntityFramework.xml" />
+    <Content Include="bin\Debug\EntityFramework6.Npgsql.dll" />
+    <Resource Include="bin\Debug\EntityFramework6.Npgsql.xml" />
+    <Content Include="bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <Resource Include="bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml" />
+    <Content Include="bin\Debug\Npgsql.dll" />
+    <Content Include="bin\Debug\Npgsql.pdb" />
+    <Resource Include="bin\Debug\Npgsql.xml" />
+    <Content Include="bin\Debug\protobuf-net.Core.dll" />
+    <Resource Include="bin\Debug\protobuf-net.Core.xml" />
+    <Content Include="bin\Debug\protobuf-net.dll" />
+    <Resource Include="bin\Debug\protobuf-net.xml" />
+    <Content Include="bin\Debug\System.Buffers.dll" />
+    <Resource Include="bin\Debug\System.Buffers.xml" />
+    <Content Include="bin\Debug\System.Collections.Immutable.dll" />
+    <Resource Include="bin\Debug\System.Collections.Immutable.xml" />
+    <Content Include="bin\Debug\System.Memory.dll" />
+    <Resource Include="bin\Debug\System.Memory.xml" />
+    <Content Include="bin\Debug\System.Numerics.Vectors.dll" />
+    <Resource Include="bin\Debug\System.Numerics.Vectors.xml" />
+    <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Resource Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="bin\Debug\System.Text.Encodings.Web.dll" />
+    <Resource Include="bin\Debug\System.Text.Encodings.Web.xml" />
+    <Content Include="bin\Debug\System.Text.Json.dll" />
+    <Resource Include="bin\Debug\System.Text.Json.xml" />
+    <Content Include="bin\Debug\System.Threading.Tasks.Extensions.dll" />
+    <Resource Include="bin\Debug\System.Threading.Tasks.Extensions.xml" />
+    <Content Include="bin\Debug\System.ValueTuple.dll" />
+    <Resource Include="bin\Debug\System.ValueTuple.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

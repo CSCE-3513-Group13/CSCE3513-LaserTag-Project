@@ -21,10 +21,16 @@ namespace CSCE3513_LaserTag_Project.Messages
         public string playerID;
 
         [ProtoMember(110)]
-        public bool loggingIn = true; //lets server know if we are attempting login in, or create new user
+        public bool loggingIn; //lets server know if we are attempting login in, or create new user
 
         [ProtoMember(200)]
         public string username;
+
+        [ProtoMember(210)]
+        public string firstname;
+
+        [ProtoMember(220)]
+        public string lastname;
 
         [ProtoMember(300)]
         public string score;

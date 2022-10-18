@@ -26,6 +26,8 @@ namespace CSCE3513_LaserTag_Project.Views
         private NetworkListener listener;
         private NetworkSender sender;
 
+        private Random rand = new Random((int)DateTime.Now.Ticks);
+
         //This is the main entry point for server code
         public ServerWindow()
         {
@@ -69,7 +71,7 @@ namespace CSCE3513_LaserTag_Project.Views
             }
         }
 
-        public void loginRequest(MessageManager data)
+        public async void loginRequest(MessageManager data)
         {
             LoginRequest r = Utils.Utilities.Deserialize<LoginRequest>(data.messageData);
 
@@ -77,14 +79,30 @@ namespace CSCE3513_LaserTag_Project.Views
             if (string.IsNullOrEmpty(r.playerID) && string.IsNullOrEmpty(r.username))
                 return;
 
+            Console.WriteLine($"Login Request: {r.playerID} - {r.loggingIn}");
             //might as well re-verify
-            if (r.loggingIn && !conn.doesPlayerExsist(r.playerID, out PlayerTable player))
+
+
+            bool foundAccount = conn.doesPlayerExsist(r.playerID, out PlayerTable tableOut);
+
+            if (r.loggingIn && !foundAccount)
             {
                 r.response = $"Player of id:{r.playerID} does not exsist!";
                 r.foundAccount = false;
 
-                MessageManager.sendMessage(r, MessageManager.messageType.LoginRequest, data.listenerPort);
+            } else if (r.loggingIn && foundAccount)
+            {
+                r.response = $"Welcome {r.username}! F:{tableOut.first_name} L:{tableOut.last_name}";
             }
+            else if(!r.loggingIn)
+            {
+                int randNum = rand.Next(100000, 999999);
+                await SQLConnection.framework.addPlayer(randNum.ToString(), r.username, r.firstname, r.lastname, 0, true);
+
+                r.response = $"User created with ID {randNum}!";
+            }
+
+            MessageManager.sendMessage(r, MessageManager.messageType.LoginRequest, data.listenerPort);
         }
     }
 }

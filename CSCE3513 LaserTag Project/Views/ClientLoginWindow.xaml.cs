@@ -46,14 +46,24 @@ namespace CSCE3513_LaserTag_Project.Views
             {
                 //Display login text
                 UIButton.Content = "Login";
-                BoxPrompt.Content = "UserID:";
+                BoxPrompt1.Content = "UserID:";
 
+                BoxPrompt2.Visibility = Visibility.Hidden;
+                BoxPrompt3.Visibility = Visibility.Hidden;
+                BoxInput2.Visibility = Visibility.Hidden;
+                BoxInput3.Visibility = Visibility.Hidden;
             }
             else
             {
                 //Display new user text
-                BoxPrompt.Content = "Username:";
+                BoxPrompt1.Content = "Codename:";
                 UIButton.Content = "Create User";
+
+
+                BoxPrompt2.Visibility = Visibility.Visible;
+                BoxPrompt3.Visibility = Visibility.Visible;
+                BoxInput2.Visibility = Visibility.Visible;
+                BoxInput3.Visibility = Visibility.Visible;
             }
         }
 
@@ -63,18 +73,23 @@ namespace CSCE3513_LaserTag_Project.Views
             LoginRequest r = new LoginRequest();
 
             //No need to send response if box is empty
-            if (string.IsNullOrEmpty(BoxInput.Text))
+            if (string.IsNullOrEmpty(BoxInput1.Text))
                 return;
+
 
             if (IsLogin.IsChecked.Value)
             {
-                r.playerID = BoxInput.Text;
+                r.playerID = BoxInput1.Text;
                 r.loggingIn = true;
             }
             else
             {
-                r.username = BoxInput.Text;
+                r.username = BoxInput1.Text;
                 r.loggingIn = false;
+
+                r.firstname = BoxInput2.Text;
+                r.lastname = BoxInput3.Text;
+
             }
 
             //Send message to server to verify login request
@@ -111,17 +126,18 @@ namespace CSCE3513_LaserTag_Project.Views
             Console.WriteLine(r.loggingIn);
             if (r.loggingIn == true && !r.foundAccount)
             {
+                
                 Dispatcher.Invoke(() => UserResponse.Content = r.response);
             }
             else if(r.loggingIn == true && r.foundAccount)
             {
-                Dispatcher.Invoke(() => UserResponse.Content = "Logging in!");
+                Dispatcher.Invoke(() => UserResponse.Content = r.response);
             }else if(r.loggingIn == false && r.foundAccount)
             {
                 Dispatcher.Invoke(() => UserResponse.Content = "Username already taken!");
             }else if(r.loggingIn == false && !r.foundAccount)
             {
-                Dispatcher.Invoke(() => UserResponse.Content = "Logging in!");
+                Dispatcher.Invoke(() => UserResponse.Content = r.response);
             }
         }
     }

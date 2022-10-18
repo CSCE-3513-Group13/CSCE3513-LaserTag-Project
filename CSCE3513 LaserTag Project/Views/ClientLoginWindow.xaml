@@ -19,22 +19,33 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
 
-                <RadioButton x:Name="IsLogin" Grid.Column="0" Margin="3" HorizontalAlignment="Center" IsChecked="True" Checked="RadioButton_Checked">Login</RadioButton>
-                <RadioButton Grid.Column="1" Margin="3" HorizontalAlignment="Center" Checked="RadioButton_Checked">New User</RadioButton>
+                <RadioButton GroupName="Login" x:Name="IsLogin" Grid.Column="0" Margin="3" HorizontalAlignment="Center" IsChecked="True" Checked="RadioButton_Checked">Login</RadioButton>
+                <RadioButton GroupName="Login" Grid.Column="1" Margin="3" HorizontalAlignment="Center" Checked="RadioButton_Checked">New User</RadioButton>
                 <Separator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="3"/>
 
-                <Label x:Name="BoxPrompt" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Center">UserID: </Label>
-                <TextBox x:Name="BoxInput" Grid.Column="1" Grid.Row="2" Margin="3"></TextBox>
+                <Label x:Name="BoxPrompt1" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Center">UserID: </Label>
+                <TextBox x:Name="BoxInput1" Grid.Column="1" Grid.Row="2" Margin="3"></TextBox>
 
-                <Button x:Name="UIButton" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="3" Click="UIButton_Click">Login</Button>
+                <Label x:Name="BoxPrompt2" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Center" Visibility="Hidden">FirstName:</Label>
+                <TextBox x:Name="BoxInput2" Grid.Column="1" Grid.Row="3" Margin="3" Visibility="Hidden"></TextBox>
+
+                <Label x:Name="BoxPrompt3" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Center" Visibility="Hidden">LastName:</Label>
+                <TextBox x:Name="BoxInput3" Grid.Column="1" Grid.Row="4" Margin="3" Visibility="Hidden"></TextBox>
 
 
-                <Label x:Name="UserResponse" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="3"></Label>
+
+
+                <Button x:Name="UIButton" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Margin="3" Click="UIButton_Click">Login</Button>
+
+
+                <Label x:Name="UserResponse" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="3"></Label>
             </Grid>
         </GroupBox>
 
