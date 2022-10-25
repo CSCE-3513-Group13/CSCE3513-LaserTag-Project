@@ -114,6 +114,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configs\ServerConfigs.cs" />
     <Compile Include="Messages\GameState.cs" />
     <Compile Include="Messages\LoginRequest.cs" />
     <Compile Include="Messages\MessageManager.cs" />
@@ -122,7 +123,7 @@
     <Compile Include="Networking\NetworkListener.cs" />
     <Compile Include="Networking\ServerNetworking.cs" />
     <Compile Include="SQL\EntityFramework.cs" />
-    <Compile Include="SQL\PlayerTable.cs" />
+    <Compile Include="SQL\PlayerItem.cs" />
     <Compile Include="SQL\SQLConnection.cs" />
     <Compile Include="Utils\Utilities.cs" />
     <Compile Include="Views\ClientLoginWindow.xaml.cs">
@@ -197,7 +198,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
-    <Folder Include="Configs\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Data\LaserTag_Logo.jpg" />

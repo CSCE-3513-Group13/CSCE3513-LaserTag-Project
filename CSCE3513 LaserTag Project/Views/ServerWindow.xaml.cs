@@ -1,8 +1,10 @@
-﻿using CSCE3513_LaserTag_Project.Messages;
+﻿using CSCE3513_LaserTag_Project.Configs;
+using CSCE3513_LaserTag_Project.Messages;
 using CSCE3513_LaserTag_Project.Networking;
 using CSCE3513_LaserTag_Project.SQL;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,8 +27,11 @@ namespace CSCE3513_LaserTag_Project.Views
         private SQLConnection conn;
         private NetworkListener listener;
         private NetworkSender sender;
+        private ServerConfigs configs;
 
         private Random rand = new Random((int)DateTime.Now.Ticks);
+
+
 
         //This is the main entry point for server code
         public ServerWindow()
@@ -36,15 +41,22 @@ namespace CSCE3513_LaserTag_Project.Views
             //Use this to run when window starts
             Console.WriteLine("Started Server");
             serverStarted();
+
+            //Set the UI datacontext to this class
+            DataContext = this;
         }
 
         public void serverStarted()
         {
             //Below is the main SQL connection 
             conn = new SQLConnection();
+            configs = new ServerConfigs(this, conn);
+
             listener = new NetworkListener(serverRecieved, 7500);
             sender = new NetworkSender();
         }
+
+        //Event is used to show all players in the database for server
 
 
 
@@ -71,6 +83,27 @@ namespace CSCE3513_LaserTag_Project.Views
             }
         }
 
+        public void autoJoinTeam(PlayerItem player)
+        {
+            //AutoBalances team. We will be able to switch teams on command
+
+            if (configs.redPlayers.Count == 0)
+            {
+                configs.redPlayers.Add(player);
+                return;
+            }
+
+            if(configs.redPlayers.Count > configs.bluePlayers.Count)
+            {
+                configs.bluePlayers.Add(player);
+            }
+            else
+            {
+                configs.redPlayers.Add(player);
+            }
+            
+        }
+
         public async void loginRequest(MessageManager data)
         {
             LoginRequest r = Utils.Utilities.Deserialize<LoginRequest>(data.messageData);
@@ -83,7 +116,7 @@ namespace CSCE3513_LaserTag_Project.Views
             //might as well re-verify
 
 
-            bool foundAccount = conn.doesPlayerExsist(r.playerID, out PlayerTable tableOut);
+            bool foundAccount = conn.doesPlayerExsist(r.playerID, out PlayerItem tableOut);
 
             if (r.loggingIn && !foundAccount)
             {
@@ -92,12 +125,14 @@ namespace CSCE3513_LaserTag_Project.Views
 
             } else if (r.loggingIn && foundAccount)
             {
+
                 r.response = $"Welcome {tableOut.codename}! F:{tableOut.first_name} L:{tableOut.last_name}";
+                autoJoinTeam(tableOut);
             }
             else if(!r.loggingIn)
             {
                 int randNum = rand.Next(100000, 999999);
-                await SQLConnection.framework.addPlayer(randNum.ToString(), r.username, r.firstname, r.lastname, 0, true);
+                await conn.addPlayer(randNum.ToString(), r.username, r.firstname, r.lastname, 0, true);
 
                 r.response = $"User created with ID {randNum}!";
             }

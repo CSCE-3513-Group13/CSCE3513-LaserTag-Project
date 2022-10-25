@@ -6,7 +6,114 @@
         xmlns:local="clr-namespace:CSCE3513_LaserTag_Project.Views"
         mc:Ignorable="d"
         Title="ServerWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Margin="3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0">Controls all functions related to the game </Label>
+
+        <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <TabItem Header="GameState">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0" Width="120" Margin="3">Start Game (F3)</Button>
+                        <Button Grid.Column="1" Width="120" Margin="3">Stop Game (F4)</Button>
+
+                        <Label Grid.Column="4">Countdown:</Label>
+                        <Label x:Name="Clock" Grid.Column="5"></Label>
+                    </Grid>
+                    
+                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="3">
+                        <GroupBox.Header>
+                            <Bold>Red Team</Bold>
+                        </GroupBox.Header>
+
+                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="First Name" Width="*" Binding="{Binding Path=first_name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Last Name" Width="*" Binding="{Binding Path=last_name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Score" Width=".5*" Binding="{Binding Path=score}" IsReadOnly="True"/>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="1" Grid.Column="2" Margin="3">
+                        <GroupBox.Header>
+                            <Bold>Blue Team</Bold>
+                        </GroupBox.Header>
+
+                        
+                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="First Name" Width="*" Binding="{Binding Path=first_name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Last Name" Width="*" Binding="{Binding Path=last_name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Score" Width=".5*" Binding="{Binding Path=score}" IsReadOnly="True"/>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </GroupBox>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Configs">
+                
+            </TabItem>
+
+            <TabItem Header="All Players Database">
+
+                <DataGrid x:Name="AllPlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="First Name" Width="*" Binding="{Binding Path=first_name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Last Name" Width="*" Binding="{Binding Path=last_name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Score" Width="100" Binding="{Binding Path=score}" IsReadOnly="True"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+                
+            </TabItem>
+
+
+
+        </TabControl>
+
     </Grid>
 </Window>

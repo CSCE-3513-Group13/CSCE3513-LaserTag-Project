@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace CSCE3513_LaserTag_Project.SQL
 {
-    internal class SQLConnection
+    public class SQLConnection
     {
 
       
-        public static EntityFramework framework;
+        private EntityFramework framework;
         public static NpgsqlConnection SQLCon;
+
+        public event EventHandler<PlayerItem> newPlayer;
+
+
 
         public SQLConnection()
         {
-
             Task lasertagSQLConnection = new Task(() => this.MainAsync().GetAwaiter().GetResult());
             lasertagSQLConnection.Start();
         }
@@ -39,7 +42,7 @@ namespace CSCE3513_LaserTag_Project.SQL
 
                 //await framework.addPlayer("123", "Quick","Adrian","Gould", 100, true);
                 //await framework.addPlayer("1234", "Ghost", "Person", "Gould", 120, true);
-                framework.displayPlayers();
+                displayPlayers();
 
                 await framework.Count();
             }
@@ -73,7 +76,7 @@ namespace CSCE3513_LaserTag_Project.SQL
 
 
         //Loops through our SQL database to see if we have the player
-        public bool doesPlayerExsist(string id, out PlayerTable player)
+        public bool doesPlayerExsist(string id, out PlayerItem player)
         {
             player = null;
             foreach (var p in framework.Players)
@@ -86,6 +89,38 @@ namespace CSCE3513_LaserTag_Project.SQL
             }
 
             return false;   
+        }
+
+        public void displayPlayers()
+        {
+
+            foreach (var player in framework.Players)
+            {
+                newPlayer.Invoke(this, player);
+                //Console.WriteLine($"CodeName: {player.codename} First:{player.first_name} Last:{player.last_name} ID:{player.playerID} Score:{player.score}");
+            }
+
+        }
+
+        public async Task addPlayer(string id, string codename, string firstname, string lastname, int score, bool save = false)
+        {
+            PlayerItem t = new PlayerItem();
+            t.playerID = id;
+            t.codename = codename;
+            t.first_name = firstname;
+            t.last_name = lastname;
+            t.score = score;
+
+            framework.Players.Add(t);
+
+
+
+
+            if (save)
+                await framework.SaveChangesAsync();
+
+            //Invoke this event
+            newPlayer.Invoke(this, t);
         }
 
 

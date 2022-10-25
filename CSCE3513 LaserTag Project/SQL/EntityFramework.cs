@@ -28,7 +28,7 @@ namespace CSCE3513_LaserTag_Project.SQL
 
 
         //We can define databases here
-        public DbSet<PlayerTable> Players { get; set; }
+        public DbSet<PlayerItem> Players { get; set; }
 
 
 
@@ -62,38 +62,6 @@ namespace CSCE3513_LaserTag_Project.SQL
                 Console.WriteLine(ex);
             }
         }
-        
-
-        public async Task addPlayer(string id, string codename, string firstname, string lastname, int score, bool save = false)
-        {
-            PlayerTable t = new PlayerTable();
-            t.playerID = id;
-            t.codename = codename;
-            t.first_name = firstname;
-            t.last_name = lastname;
-            t.score = score;
-
-            Players.Add(t);
-
-
-
-
-            if (save)
-                await SaveChangesAsync();
-            
-        }
-
-
-        public void displayPlayers()
-        {
-
-            foreach(var player in Players)
-            {
-                Console.WriteLine($"CodeName: {player.codename} First:{player.first_name} Last:{player.last_name} ID:{player.playerID} Score:{player.score}");
-            }
-
-        }
-
     }
 
     public class NpgSqlConfiguration : DbConfiguration
