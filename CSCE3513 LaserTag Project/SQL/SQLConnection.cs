@@ -10,7 +10,7 @@ namespace CSCE3513_LaserTag_Project.SQL
 {
     public class SQLConnection
     {
-
+        //Anything SQL related functions need to happen here
       
         private EntityFramework framework;
         public static NpgsqlConnection SQLCon;

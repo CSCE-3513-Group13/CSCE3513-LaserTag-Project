@@ -2,6 +2,8 @@
 using CSCE3513_LaserTag_Project.Messages;
 using CSCE3513_LaserTag_Project.Networking;
 using CSCE3513_LaserTag_Project.SQL;
+using NLog.Targets.Wrappers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CSCE3513_LaserTag_Project.Utils;
 
 namespace CSCE3513_LaserTag_Project.Views
 {
@@ -31,7 +34,7 @@ namespace CSCE3513_LaserTag_Project.Views
 
         private Random rand = new Random((int)DateTime.Now.Ticks);
 
-
+        private static Logger log;
 
         //This is the main entry point for server code
         public ServerWindow()
@@ -42,8 +45,14 @@ namespace CSCE3513_LaserTag_Project.Views
             Console.WriteLine("Started Server");
             serverStarted();
 
+            //LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Debug, "main");
+            //LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Debug, "console");
+            //LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Debug, "wpf");
+            //LogManager.ReconfigExistingLoggers();
+
             //Set the UI datacontext to this class
             DataContext = this;
+            this.Loaded += ServerWindow_Loaded;
         }
 
         public void serverStarted()
@@ -54,6 +63,34 @@ namespace CSCE3513_LaserTag_Project.Views
 
             listener = new NetworkListener(serverRecieved, 7500);
             sender = new NetworkSender();
+
+            
+        }
+
+        private void AttachConsole()
+        {
+            const string target = "wpf";
+            var doc = LogManager.Configuration.FindTargetByName<FlowDocumentTarget>(target)?.Document;
+            if (doc == null)
+            {
+                var wrapped = LogManager.Configuration.FindTargetByName<WrapperTargetBase>(target);
+                doc = (wrapped?.WrappedTarget as FlowDocumentTarget)?.Document;
+            }
+            ConsoleText.FontSize = 12;
+            ConsoleText.Document = doc ?? new FlowDocument(new Paragraph(new Run("No target!")));
+            ConsoleText.TextChanged += ConsoleText_TextChanged;
+        }
+
+        private void ConsoleText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+        }
+
+        private void ServerWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
+
+            //log.Warn("Welcome");
         }
 
         //Event is used to show all players in the database for server
@@ -127,7 +164,7 @@ namespace CSCE3513_LaserTag_Project.Views
             {
 
                 r.response = $"Welcome {tableOut.codename}! F:{tableOut.first_name} L:{tableOut.last_name}";
-                autoJoinTeam(tableOut);
+                this.Dispatcher.Invoke(() => autoJoinTeam(tableOut));
             }
             else if(!r.loggingIn)
             {

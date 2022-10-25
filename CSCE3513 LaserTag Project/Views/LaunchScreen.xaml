@@ -10,7 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
@@ -32,7 +32,7 @@
 
         <Button Grid.Row="3" Grid.Column="0" Margin="6" ToolTip="This button lunaches the server mode for clients to connect to" Click="ServerButton_Click">Server</Button>
         <Button Grid.Row="3" Grid.Column="1" Margin="6" ToolTip="Client mode if you want to join a launched server" Click="ClientButton_Click">Client</Button>
-        <Button Grid.Row="3" Grid.Column="2" Margin="6" ToolTip="debug mode" Click="Button_Click">Debug</Button>
+        <!-- <Button Grid.Row="3" Grid.Column="2" Margin="6" ToolTip="debug mode" Click="Button_Click">Debug</Button> -->
 
     </Grid>
 </Window>

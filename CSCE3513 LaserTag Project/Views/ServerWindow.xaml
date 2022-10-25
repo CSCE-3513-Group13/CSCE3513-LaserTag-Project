@@ -20,6 +20,10 @@
         <Label Grid.Row="0" Grid.Column="0">Controls all functions related to the game </Label>
 
         <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <TabItem Header="Logs">
+                <RichTextBox x:Name="ConsoleText" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" IsReadOnly="True" Background="#0c0c0c"/>
+            </TabItem>
+            
             <TabItem Header="GameState">
                 <Grid>
                     <Grid.ColumnDefinitions>
