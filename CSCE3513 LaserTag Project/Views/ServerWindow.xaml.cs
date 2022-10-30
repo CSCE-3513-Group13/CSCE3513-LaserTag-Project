@@ -19,6 +19,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CSCE3513_LaserTag_Project.Utils;
+using NLog.Layouts;
+using NLog.Targets;
+using NLog.Fluent;
+using System.IO;
+using Path = System.IO.Path;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace CSCE3513_LaserTag_Project.Views
 {
@@ -27,44 +34,75 @@ namespace CSCE3513_LaserTag_Project.Views
     /// </summary>
     public partial class ServerWindow : Window
     {
-        private SQLConnection conn;
+        private SQLManager conn;
         private NetworkListener listener;
         private NetworkSender sender;
-        private ServerConfigs configs;
 
         private Random rand = new Random((int)DateTime.Now.Ticks);
+        public static string ApplicationLocation { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+
+        public static ServerConfigs Configs => _AppConfigs?.Data;
+        public static SharedPersistent<ServerConfigs> _AppConfigs;
+        public static Dispatcher serverDispatch;
 
         private static Logger log;
 
         //This is the main entry point for server code
         public ServerWindow()
         {
-            InitializeComponent();
-
-            //Use this to run when window starts
-            Console.WriteLine("Started Server");
-            serverStarted();
-
-            //LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Debug, "main");
-            //LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Debug, "console");
-            //LogManager.Configuration.AddRule(LogLevel.Debug, LogLevel.Debug, "wpf");
-            //LogManager.ReconfigExistingLoggers();
-
+            ServerWindow._AppConfigs = LoadConfigs();
+            Target.Register<FlowDocumentTarget>("FlowDocument");
+            serverDispatch = this.Dispatcher;
             //Set the UI datacontext to this class
-            DataContext = this;
-            this.Loaded += ServerWindow_Loaded;
+            this.DataContext = Configs;
+            this.ContentRendered += ServerWindow_ContentRendered;
+
+            InitializeComponent();
         }
 
-        public void serverStarted()
+        private void ServerWindow_ContentRendered(object sender, EventArgs e)
         {
-            //Below is the main SQL connection 
-            conn = new SQLConnection();
-            configs = new ServerConfigs(this, conn);
+            AttachConsole();
 
+            conn = new SQLManager();
             listener = new NetworkListener(serverRecieved, 7500);
             sender = new NetworkSender();
 
-            
+            Configs.updateClock();
+
+            log = LogManager.GetCurrentClassLogger();
+            log.Warn("Welcome to the CSCE LaserTag Server!");
+
+            testFlow();
+        }
+
+        private void testFlow()
+        {
+            SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
+            SolidColorBrush RedBrush = new SolidColorBrush(Colors.Red);
+
+            Run run1 = new Run();
+            Run run2 = new Run();
+            Run run3 = new Run();
+
+            run1.Text = "Paragraph 1 with a red brush";
+            run1.Foreground = RedBrush;
+
+            run2.Text = "Paragraph 2 with a blue brush";
+            run2.Foreground = BlueBrush;
+
+            run3.Text = "Paragraph 3 and back to a red brush";
+            run3.Foreground = RedBrush;
+            // Add paragraphs to the FlowDocument.
+            RedFlow.Blocks.Add(new Paragraph(run1));
+            RedFlow.Blocks.Add(new Paragraph(run2));
+            RedFlow.Blocks.Add(new Paragraph(run3));
+        }
+
+        private SharedPersistent<ServerConfigs> LoadConfigs()
+        {
+            string NewConfigPath = Path.Combine(ApplicationLocation, "LaserTag.cfg");
+            return SharedPersistent<ServerConfigs>.Load(NewConfigPath);
         }
 
         private void AttachConsole()
@@ -80,27 +118,20 @@ namespace CSCE3513_LaserTag_Project.Views
             ConsoleText.Document = doc ?? new FlowDocument(new Paragraph(new Run("No target!")));
             ConsoleText.TextChanged += ConsoleText_TextChanged;
         }
-
         private void ConsoleText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            var textBox = (RichTextBox)sender;
+            ConsoleText.ScrollToEnd();
         }
 
-        private void ServerWindow_Loaded(object sender, RoutedEventArgs e)
-        {
 
-
-            //log.Warn("Welcome");
-        }
-
-        //Event is used to show all players in the database for server
 
 
 
         //This function is called when we recieve data on the server!
         private void serverRecieved(MessageManager data)
         {
-            Console.WriteLine($"ServerRecieved: {data.type}");
+            log.Info($"ServerRecieved: {data.type}");
             switch (data.type)
             {
                 case MessageManager.messageType.LoginRequest:
@@ -114,7 +145,7 @@ namespace CSCE3513_LaserTag_Project.Views
 
 
                 default:
-                    Console.WriteLine("Unkown network type!");
+                    log.Info("Unkown network type!");
                     break;
 
             }
@@ -124,23 +155,22 @@ namespace CSCE3513_LaserTag_Project.Views
         {
             //AutoBalances team. We will be able to switch teams on command
 
-            if (configs.redPlayers.Count == 0)
+            if (Configs.redPlayers.Count == 0)
             {
-                configs.redPlayers.Add(player);
+                Configs.redPlayers.Add(player);
                 return;
             }
 
-            if(configs.redPlayers.Count > configs.bluePlayers.Count)
+            if(Configs.redPlayers.Count > Configs.bluePlayers.Count)
             {
-                configs.bluePlayers.Add(player);
+                Configs.bluePlayers.Add(player);
             }
             else
             {
-                configs.redPlayers.Add(player);
+                Configs.redPlayers.Add(player);
             }
             
         }
-
         public async void loginRequest(MessageManager data)
         {
             LoginRequest r = Utils.Utilities.Deserialize<LoginRequest>(data.messageData);
@@ -149,7 +179,7 @@ namespace CSCE3513_LaserTag_Project.Views
             if (string.IsNullOrEmpty(r.playerID) && string.IsNullOrEmpty(r.username))
                 return;
 
-            Console.WriteLine($"Login Request: {r.playerID} - {r.loggingIn}");
+            log.Info($"Login Request: {r.playerID} - {r.loggingIn}");
             //might as well re-verify
 
 
@@ -176,5 +206,50 @@ namespace CSCE3513_LaserTag_Project.Views
 
             MessageManager.sendMessage(r, MessageManager.messageType.LoginRequest, data.listenerPort);
         }
+    }
+
+
+
+    [Target("flowDocument")]
+    public sealed class FlowDocumentTarget : TargetWithLayout
+    {
+        private FlowDocument _document = new FlowDocument { Background = new SolidColorBrush(Colors.Black) };
+        private readonly Paragraph _paragraph = new Paragraph();
+        private readonly int _maxLines = 500;
+
+        public FlowDocument Document => _document;
+
+        public FlowDocumentTarget()
+        {
+            _document.Blocks.Add(_paragraph);
+        }
+
+        /// <inheritdoc />
+        protected override void Write(LogEventInfo logEvent)
+        {
+            _document.Dispatcher.Invoke(() => Update(logEvent));
+        }
+
+        private void Update(LogEventInfo logEvent)
+        {
+
+
+            var message = $"{Layout.Render(logEvent)}\n";
+            _paragraph.Inlines.Add(new Run(message) { Foreground = LogLevelColors[logEvent.Level] });
+
+            // A massive paragraph slows the UI down
+            if (_paragraph.Inlines.Count > _maxLines)
+                _paragraph.Inlines.Remove(_paragraph.Inlines.FirstInline);
+        }
+
+        private static readonly Dictionary<LogLevel, SolidColorBrush> LogLevelColors = new Dictionary<LogLevel, SolidColorBrush>
+        {
+            [LogLevel.Trace] = new SolidColorBrush(Colors.DimGray),
+            [LogLevel.Debug] = new SolidColorBrush(Colors.DarkGray),
+            [LogLevel.Info] = new SolidColorBrush(Colors.White),
+            [LogLevel.Warn] = new SolidColorBrush(Colors.Magenta),
+            [LogLevel.Error] = new SolidColorBrush(Colors.Yellow),
+            [LogLevel.Fatal] = new SolidColorBrush(Colors.Red),
+        };
     }
 }

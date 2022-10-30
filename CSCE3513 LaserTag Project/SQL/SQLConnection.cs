@@ -1,4 +1,7 @@
-﻿using Npgsql;
+﻿using CSCE3513_LaserTag_Project.Views;
+using NLog;
+using NLog.Fluent;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,23 +11,35 @@ using System.Threading.Tasks;
 
 namespace CSCE3513_LaserTag_Project.SQL
 {
-    public class SQLConnection
+
+    /// <summary>
+    /// This manages all SQL related functions
+    /// </summary>
+    public class SQLManager
     {
         //Anything SQL related functions need to happen here
       
         private EntityFramework framework;
         public static NpgsqlConnection SQLCon;
 
+        private static Logger log = LogManager.GetCurrentClassLogger();
+
         public event EventHandler<PlayerItem> newPlayer;
 
 
-
-        public SQLConnection()
+        public SQLManager()
         {
             Task lasertagSQLConnection = new Task(() => this.MainAsync().GetAwaiter().GetResult());
             lasertagSQLConnection.Start();
+
+            newPlayer += SQLManager_newPlayer;
         }
 
+        private void SQLManager_newPlayer(object sender, PlayerItem e)
+        {
+            log.Info($"Added Player {e.codename}!");
+            ServerWindow.Configs.AddPlayer(e);
+        }
 
         public async Task MainAsync()
         {
@@ -37,14 +52,9 @@ namespace CSCE3513_LaserTag_Project.SQL
 
                 framework = new EntityFramework(SQLCon, true);
 
-                
-                await framework.Count();
-
                 //await framework.addPlayer("123", "Quick","Adrian","Gould", 100, true);
                 //await framework.addPlayer("1234", "Ghost", "Person", "Gould", 120, true);
-                displayPlayers();
-
-                await framework.Count();
+                getAllPlayers();
             }
             catch (Exception ex)
             {
@@ -52,6 +62,9 @@ namespace CSCE3513_LaserTag_Project.SQL
                 return;
             }
         }
+
+
+
 
         public async Task createTable()
         {
@@ -71,7 +84,7 @@ namespace CSCE3513_LaserTag_Project.SQL
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            Console.WriteLine("Table created");
+            log.Info("SQL Table created/Verified!");
         }
 
 
@@ -91,15 +104,14 @@ namespace CSCE3513_LaserTag_Project.SQL
             return false;   
         }
 
-        public void displayPlayers()
-        {
 
+        public void getAllPlayers()
+        {
             foreach (var player in framework.Players)
             {
                 newPlayer.Invoke(this, player);
                 //Console.WriteLine($"CodeName: {player.codename} First:{player.first_name} Last:{player.last_name} ID:{player.playerID} Score:{player.score}");
             }
-
         }
 
         public async Task addPlayer(string id, string codename, string firstname, string lastname, int score, bool save = false)

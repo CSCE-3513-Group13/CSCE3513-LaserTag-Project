@@ -19,6 +19,13 @@
 
         <Label Grid.Row="0" Grid.Column="0">Controls all functions related to the game </Label>
 
+        <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
+                <Run Text="Game Timer: ["/>
+                <Run Text="{Binding timer}"/>
+                <Run Text="]"/>
+        </TextBlock>
+
+
         <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <TabItem Header="Logs">
                 <RichTextBox x:Name="ConsoleText" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" IsReadOnly="True" Background="#0c0c0c"/>
@@ -40,6 +47,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -52,6 +60,8 @@
                         <Button Grid.Column="0" Width="120" Margin="3">Start Game (F3)</Button>
                         <Button Grid.Column="1" Width="120" Margin="3">Stop Game (F4)</Button>
 
+                        <Button Grid.Column="2" Width="150" Margin="3">Switch Selected Player</Button>
+
                         <Label Grid.Column="4">Countdown:</Label>
                         <Label x:Name="Clock" Grid.Column="5"></Label>
                     </Grid>
@@ -61,7 +71,7 @@
                             <Bold>Red Team</Bold>
                         </GroupBox.Header>
 
-                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
@@ -80,7 +90,7 @@
                         </GroupBox.Header>
 
                         
-                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
@@ -96,13 +106,179 @@
                 </Grid>
             </TabItem>
 
+            
+            <TabItem Header="GameAction">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*"/>
+                        <ColumnDefinition Width=".5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Grid.Row="0" Grid.Column="0">
+                        <GroupBox.Header>
+                            <Bold>Red</Bold>
+                        </GroupBox.Header>
+
+                        <RichTextBox IsReadOnly="True">
+                            <RichTextBox.Resources>
+                                <Style TargetType="{x:Type Paragraph}">
+                                    <Setter Property="Margin" Value="0"/>
+                                </Style>
+                            </RichTextBox.Resources>
+
+                            <FlowDocument x:Name="RedFlow">
+
+                            </FlowDocument>
+                        </RichTextBox>
+                        
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="0" Grid.Column="1">
+                        <GroupBox.Header>
+                            <Bold>Blue</Bold>
+                        </GroupBox.Header>
+
+                        
+                        <RichTextBox IsReadOnly="True">
+                            <RichTextBox.Resources>
+                                <Style TargetType="{x:Type Paragraph}">
+                                    <Setter Property="Margin" Value="0"/>
+                                </Style>
+                            </RichTextBox.Resources>
+
+                            <FlowDocument x:Name="BlueFlow">
+                                
+                            </FlowDocument>
+                        </RichTextBox>
+
+                    </GroupBox>
+                    
+                </Grid>
+            </TabItem>
+
             <TabItem Header="Configs">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <RichTextBox Grid.Column="0" Grid.Row="0" BorderThickness="0" Margin="3">
+                        <FlowDocument>
+                            <Paragraph>
+                                Game configs can be adjusted before game start. These settings are saved into the LaserTag.cfg file. Any changes to networking configs
+                                <Bold>must</Bold> be followed by a application
+                                restart for the changes to take effect.
+                                
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <GroupBox Grid.Row="0" Grid.Column="0" Margin="3" Header="Network Configs">
+
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="0" Grid.Column="1" Margin="3" Header="Game Configs">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+
+
+
+                                <Label Grid.Row="0" Grid.Column="0" Margin="3">Game Time Limit:</Label>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="3" Width="100" Text="{Binding timeLimit}"/>
+
+
+
+                                <Label Grid.Row="2" Grid.Column="0" Margin="3" IsEnabled="False">GameMode:</Label>
+                                <ComboBox Grid.Row="2" Grid.Column="1" Margin="3" IsEnabled="False">
+                                    <ComboBoxItem>Deathmatch</ComboBoxItem>
+                                    <ComboBoxItem>Score</ComboBoxItem>
+                                </ComboBox>
+
+                                <Label Grid.Row="3" Grid.Column="0" Margin="3">TeamScoreWin:</Label>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="3" Width="100" Text="{Binding teamScoreWin}"/>
+
+
+
+
+
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="0" Grid.Column="2" Margin="3" Header="Player Configs" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+
+
+
+                                <Label Grid.Row="0" Grid.Column="0" Margin="3">Player Health:</Label>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="3" Width="100" Text="{Binding playerHealth}"/>
+
+
+                                <Label Grid.Row="1" Grid.Column="0" Margin="3">Player Damage:</Label>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="3" Width="100" Text="{Binding playerDamage}"/>
+
+                                <Label Grid.Row="3" Grid.Column="0" Margin="3">Player Lives:</Label>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="3" Width="100" Text="{Binding playerLives}"/>
+
+
+
+
+
+
+                            </Grid>
+                        </GroupBox>
+
+                    </Grid>
+
+
+                </Grid>
+
+                
                 
             </TabItem>
 
             <TabItem Header="All Players Database">
 
-                <DataGrid x:Name="AllPlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False">
+                <DataGrid x:Name="AllPlayers" ItemsSource="{Binding AllPlayers}" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
