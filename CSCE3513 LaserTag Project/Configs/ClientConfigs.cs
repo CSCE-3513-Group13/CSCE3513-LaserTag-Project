@@ -46,5 +46,12 @@ namespace CSCE3513_LaserTag_Project.Configs
 
         [XmlIgnore] private string _totalScore = "";
         [XmlIgnore] public string totalScore { get => _totalScore; set => SetValue(ref _totalScore, value); }
+
+
+        public void updateClock(TimeSpan span)
+        {
+            timer = span.ToString("mm\\:ss");
+        }
+
     }
 }

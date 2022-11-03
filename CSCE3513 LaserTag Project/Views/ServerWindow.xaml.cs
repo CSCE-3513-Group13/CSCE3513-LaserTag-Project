@@ -169,6 +169,21 @@ namespace CSCE3513_LaserTag_Project.Views
             });
         }
 
+        private void signalGameState(bool state)
+        {
+            GameState gstate = new GameState();
+            gstate.Start = DateTime.Now;
+            gstate.End = gameStop;
+            gstate.State = state;
+
+
+            log.Warn($"Signaling game state to {state}!");
+            foreach (var client in allClientPorts)
+            {
+                MessageManager.sendMessage(gstate, MessageManager.messageType.GameState, client);
+            }
+        }
+
         private void switchTeam(MessageManager data)
         {
             newPlayerActivated r = Utils.Utilities.Deserialize<newPlayerActivated>(data.messageData);
@@ -336,6 +351,7 @@ namespace CSCE3513_LaserTag_Project.Views
             finally
             {
                 Configs.updateClock();
+                signalGameState(false);
             }
         }
 
@@ -349,7 +365,7 @@ namespace CSCE3513_LaserTag_Project.Views
             gameStop = DateTime.Now.AddMinutes(Configs.timeLimit);
             gameTimer.Start();
 
-
+            signalGameState(true);
 
         }
         private void GameTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -358,6 +374,9 @@ namespace CSCE3513_LaserTag_Project.Views
             {
                 gameTimer.Stop();
                 gameTimer.Elapsed -= GameTimer_Elapsed;
+
+                signalGameState(false);
+                return;
             }
 
             TimeSpan remainderTime = TimeSpan.FromSeconds(remainderSeconds);

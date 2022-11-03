@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,6 +30,11 @@ namespace CSCE3513_LaserTag_Project.Views
         private NetworkListener listener;
         private NetworkSender Sender;
         private string clientID;
+        public static Timer gameTimer = new Timer(1000);
+        public static DateTime gameStop;
+        //We use this for simple countdown variable
+        private double remainderSeconds = 0;
+
 
         public static ClientConfigs Configs = new ClientConfigs();
 
@@ -45,6 +51,10 @@ namespace CSCE3513_LaserTag_Project.Views
 
             listener = new NetworkListener(clientRecieved);
             Sender = new NetworkSender();
+
+            Configs.timer = "WAITING FOR START";
+
+            testFlow();
 
         }
 
@@ -123,14 +133,12 @@ namespace CSCE3513_LaserTag_Project.Views
                         break;
 
                     case MessageManager.messageType.GameState:
-
+                        gameStateRecieved(data);
                         break;
 
                     case MessageManager.messageType.newPlayerActivated:
                         newPlayerActivated(data);
                         break;
-
-
 
                     default:
                         Console.WriteLine("Unkown network type!");
@@ -139,6 +147,73 @@ namespace CSCE3513_LaserTag_Project.Views
                 }
 
             });
+        }
+
+        private void gameStateRecieved(MessageManager data)
+        {
+            GameState r = Utils.Utilities.Deserialize<GameState>(data.messageData);
+
+
+            //If state is true, we are starting game
+            if (r.State)
+            {
+                GameControl.SelectedIndex = 1;
+                gameTimer.Elapsed += GameTimer_Elapsed;
+
+                TimeSpan time =  r.End - r.Start;
+
+                remainderSeconds = time.TotalSeconds - 1;
+                gameStop = r.End;
+
+                gameTimer.Start();
+            }
+            else
+            {
+                GameControl.SelectedIndex = 0;
+                gameTimer.Elapsed -= GameTimer_Elapsed;
+                Configs.timer = "WAITING FOR START";
+
+                gameTimer.Stop();
+            }
+
+        }
+
+        private void testFlow()
+        {
+            SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
+            SolidColorBrush RedBrush = new SolidColorBrush(Colors.Red);
+
+            Run run1 = new Run();
+            Run run2 = new Run();
+            Run run3 = new Run();
+
+            run1.Text = "SoSo hit SoSo";
+            run1.Foreground = RedBrush;
+
+            run2.Text = "Paragraph 2 with a blue brush";
+            run2.Foreground = BlueBrush;
+
+            run3.Text = "Paragraph 3 and back to a red brush";
+            run3.Foreground = RedBrush;
+            // Add paragraphs to the FlowDocument.
+            RedFlow.Blocks.Add(new Paragraph(run1));
+            RedFlow.Blocks.Add(new Paragraph(run2));
+            RedFlow.Blocks.Add(new Paragraph(run3));
+        }
+
+
+        private void GameTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (gameStop < DateTime.Now)
+            {
+                gameTimer.Stop();
+                gameTimer.Elapsed -= GameTimer_Elapsed;
+            }
+
+            TimeSpan remainderTime = TimeSpan.FromSeconds(remainderSeconds);
+            Configs.updateClock(remainderTime);
+
+            remainderSeconds--;
         }
 
         private void newPlayerActivated(MessageManager data)

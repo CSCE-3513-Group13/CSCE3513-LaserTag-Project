@@ -180,6 +180,35 @@
                     </Bold>
                 </TabItem.Header>
 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Grid.Row="0" Grid.Column="0">
+                        <GroupBox.Header>
+                            <Bold>Game Action Log</Bold>
+                        </GroupBox.Header>
+
+                        <RichTextBox IsReadOnly="True">
+                            <RichTextBox.Resources>
+                                <Style TargetType="{x:Type Paragraph}">
+                                    <Setter Property="Margin" Value="0"/>
+                                </Style>
+                            </RichTextBox.Resources>
+
+                            <FlowDocument x:Name="RedFlow">
+
+                            </FlowDocument>
+                        </RichTextBox>
+
+                    </GroupBox>
+
+                </Grid>
+
             </TabItem>
 
         </TabControl>
