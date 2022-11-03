@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{25F34003-DEB6-4952-9045-5E24582AC33C}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>CSCE3513_LaserTag_Project</RootNamespace>
     <AssemblyName>CSCE3513 LaserTag Project</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -118,13 +118,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configs\ClientConfigs.cs" />
     <Compile Include="Configs\ServerConfigs.cs" />
     <Compile Include="Configs\SharedViewModel.cs" />
     <Compile Include="Messages\GameState.cs" />
     <Compile Include="Messages\LoginRequest.cs" />
     <Compile Include="Messages\MessageManager.cs" />
     <Compile Include="Messages\newPlayerActivated.cs" />
-    <Compile Include="Messages\SwitchedTeams.cs" />
     <Compile Include="Networking\NetworkSender.cs" />
     <Compile Include="Networking\NetworkListener.cs" />
     <Compile Include="Networking\ServerNetworking.cs" />
@@ -138,17 +138,10 @@
     <Compile Include="Views\ClientLoginWindow.xaml.cs">
       <DependentUpon>ClientLoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClientWindow.xaml.cs">
-      <DependentUpon>ClientWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ServerWindow.xaml.cs">
       <DependentUpon>ServerWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ClientLoginWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ClientWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

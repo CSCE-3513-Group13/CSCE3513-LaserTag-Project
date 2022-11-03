@@ -18,7 +18,14 @@ namespace CSCE3513_LaserTag_Project.Messages
             newClient,
             LoginRequest,
             GameState,
-            newPlayerActivated
+            newPlayerActivated,
+            SwitchTeam
+        }
+
+        public enum Team
+        {
+            Red,
+            Blue
         }
 
         [ProtoMember(1)]

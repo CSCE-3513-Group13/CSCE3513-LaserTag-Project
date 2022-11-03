@@ -1,5 +1,6 @@
 ﻿using CSCE3513_LaserTag_Project.SQL;
 using CSCE3513_LaserTag_Project.Views;
+using ProtoBuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,22 +26,28 @@ namespace CSCE3513_LaserTag_Project.Configs
 
         [XmlIgnore] private Dispatcher dispatcher { get { return ServerWindow.serverDispatch; } }
 
-        //Keep a collection of all players in SQL
+        //Keep a collection of all players in SQL for UI
         [XmlIgnore] private ObservableCollection<PlayerItem> _AllPlayers = new ObservableCollection<PlayerItem>();
         [XmlIgnore] public ObservableCollection<PlayerItem> AllPlayers { get => _AllPlayers; set => SetValue(ref _AllPlayers, value); }
 
 
-        //Collection of RedPlayers
+        //Collection of logged in RedPlayers
         [XmlIgnore] private ObservableCollection<PlayerItem> _redPlayers = new ObservableCollection<PlayerItem>();
         [XmlIgnore] public ObservableCollection<PlayerItem> redPlayers { get => _redPlayers; set => SetValue(ref _redPlayers, value); }
 
-        //Collection of BluePlayers
+        //Collection of logged in BluePlayers
         [XmlIgnore] private ObservableCollection<PlayerItem> _bluePlayers = new ObservableCollection<PlayerItem>();
         [XmlIgnore] public ObservableCollection<PlayerItem> bluePlayers { get => _bluePlayers; set => SetValue(ref _bluePlayers, value); }
+
 
         //Updatable Timer
         [XmlIgnore] private string _timer = "";
         [XmlIgnore] public string timer { get => _timer; set => SetValue(ref _timer, value); }
+
+        //Total Logged in players
+        [XmlIgnore] private int _loggedInCount = 0;
+        [XmlIgnore] public int loggedInCount { get => _loggedInCount; set => SetValue(ref _loggedInCount, value); }
+
 
 
 
@@ -81,6 +88,11 @@ namespace CSCE3513_LaserTag_Project.Configs
         public void updateClock()
         {
             timer = TimeSpan.FromMinutes(timeLimit).ToString("mm\\:ss");
+        }
+
+        public void updateClock(TimeSpan span)
+        {
+            timer = span.ToString("mm\\:ss");
         }
 
         public void AddPlayer(PlayerItem player)

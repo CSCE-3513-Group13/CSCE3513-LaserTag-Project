@@ -1,5 +1,8 @@
-﻿using CSCE3513_LaserTag_Project.Messages;
+﻿using CSCE3513_LaserTag_Project.Configs;
+using CSCE3513_LaserTag_Project.Messages;
 using CSCE3513_LaserTag_Project.Networking;
+using CSCE3513_LaserTag_Project.SQL;
+using CSCE3513_LaserTag_Project.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static CSCE3513_LaserTag_Project.Messages.MessageManager;
 
 namespace CSCE3513_LaserTag_Project.Views
 {
@@ -24,17 +28,24 @@ namespace CSCE3513_LaserTag_Project.Views
         private bool initilized = false;
         private NetworkListener listener;
         private NetworkSender Sender;
+        private string clientID;
+
+        public static ClientConfigs Configs = new ClientConfigs();
+
 
         public ClientLoginWindow()
         {
+            this.DataContext = Configs;
+
             InitializeComponent();
 
             initilized = true;
 
             //Client needs to send data to server
-            
+
             listener = new NetworkListener(clientRecieved);
             Sender = new NetworkSender();
+
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
@@ -101,44 +112,131 @@ namespace CSCE3513_LaserTag_Project.Views
         private void clientRecieved(MessageManager data)
         {
             Console.WriteLine($"ClientRecieved: {data.type}");
-            switch (data.type)
+
+
+            Dispatcher.Invoke(() =>
             {
-                case MessageManager.messageType.LoginRequest:
-                    loginRequest(data);
-                    break;
+                switch (data.type)
+                {
+                    case MessageManager.messageType.LoginRequest:
+                        loginRequest(data);
+                        break;
 
-                case MessageManager.messageType.GameState:
+                    case MessageManager.messageType.GameState:
 
-                    break;
+                        break;
+
+                    case MessageManager.messageType.newPlayerActivated:
+                        newPlayerActivated(data);
+                        break;
 
 
 
-                default:
-                    Console.WriteLine("Unkown network type!");
-                    break;
+                    default:
+                        Console.WriteLine("Unkown network type!");
+                        break;
 
+                }
+
+            });
+        }
+
+        private void newPlayerActivated(MessageManager data)
+        {
+            newPlayerActivated r = Utils.Utilities.Deserialize<newPlayerActivated>(data.messageData);
+
+
+            Configs.redPlayers.Clear();
+            Configs.bluePlayers.Clear();
+
+            foreach(var player in r.players)
+            {
+                if (player.team == MessageManager.Team.Red)
+                {
+                    Configs.redPlayers.Add(player.player);
+                }
+                else
+                {
+                    Configs.bluePlayers.Add(player.player);
+                }
             }
+
         }
 
         private void loginRequest(MessageManager data)
         {
             LoginRequest r = Utils.Utilities.Deserialize<LoginRequest>(data.messageData);
-            Console.WriteLine(r.loggingIn);
+            Console.WriteLine($"{r.loggingIn} {r.foundAccount}");
             if (r.loggingIn == true && !r.foundAccount)
             {
-                
-                Dispatcher.Invoke(() => UserResponse.Content = r.response);
+
+                UserResponse.Content = r.response;
+
+
             }
-            else if(r.loggingIn == true && r.foundAccount)
+            else if (r.loggingIn == true && r.foundAccount)
             {
-                Dispatcher.Invoke(() => UserResponse.Content = r.response);
-            }else if(r.loggingIn == false && r.foundAccount)
-            {
-                Dispatcher.Invoke(() => UserResponse.Content = "Username already taken!");
-            }else if(r.loggingIn == false && !r.foundAccount)
-            {
-                Dispatcher.Invoke(() => UserResponse.Content = r.response);
+                //Logged in
+
+                UserResponse.Content = r.response;
+                ClientLoginBox.Visibility = Visibility.Hidden;
+                PlayerInfoBox.Visibility = Visibility.Visible;
+                GameControl.IsEnabled = true;
+
+                Configs.playerID = r.playerID;
+                Configs.codeName = r.username;
+                Configs.firstName = r.firstname;
+                Configs.lastName = r.lastname;
+                Configs.totalScore = r.score;
+                clientID = r.playerID;
+
+
+
+
             }
+            else if (r.loggingIn == false && r.foundAccount)
+            {
+                UserResponse.Content = "Username already taken!";
+            }
+            else if (r.loggingIn == false && !r.foundAccount)
+            {
+                //Created new account
+
+                UserResponse.Content = r.response;
+                ClientLoginBox.Visibility = Visibility.Hidden;
+                PlayerInfoBox.Visibility = Visibility.Visible;
+                GameControl.IsEnabled = true;
+
+                Configs.playerID = r.playerID;
+                Configs.codeName = r.username;
+                Configs.firstName = r.firstname;
+                Configs.lastName = r.lastname;
+                Configs.totalScore = r.score;
+                clientID = r.playerID;
+
+            }
+        }
+
+        private void SwitchTeamButton_Click(object sender, RoutedEventArgs e)
+        {
+            PlayerItem foundplayer;
+            Team newTeam;
+
+            foundplayer = Configs.redPlayers.FirstOrDefault(x => x.playerID == clientID);
+            newTeam = Team.Blue;
+            if (foundplayer == null) {
+                foundplayer = Configs.bluePlayers.FirstOrDefault(x => x.playerID == clientID);
+                newTeam = Team.Red;
+            }
+
+            newPlayerActivated s = new newPlayerActivated();
+            playerTeam t = new playerTeam();
+            t.team = newTeam;
+            t.player = foundplayer;
+
+            s.players.Add(t);
+
+            MessageManager.sendMessage(s, MessageManager.messageType.newPlayerActivated);
         }
     }
 }

@@ -5,14 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSCE3513_LaserTag_Project.Views"
         mc:Ignorable="d"
-        Title="LaserTag Game" Height="225" Width="400">
+        Title="LaserTag Game" Height="425" Width="900">
     <Grid>
 
-        <GroupBox Header="Client Login">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Margin="3">
+            <Run Text="Game Timer: ["/>
+            <Run Text="{Binding timer}" Foreground="Red"/>
+            <Run Text="]"/>
+        </TextBlock>
+
+        <GroupBox x:Name="ClientLoginBox" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Margin="3">
+            <GroupBox.Header>
+                <Bold>
+                    Client Login
+                </Bold>
+            </GroupBox.Header>
+
+
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="41*"/>
+                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="116*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -26,28 +51,142 @@
                 </Grid.RowDefinitions>
 
 
-                <RadioButton GroupName="Login" x:Name="IsLogin" Grid.Column="0" Margin="3" HorizontalAlignment="Center" IsChecked="True" Checked="RadioButton_Checked">Login</RadioButton>
-                <RadioButton GroupName="Login" Grid.Column="1" Margin="3" HorizontalAlignment="Center" Checked="RadioButton_Checked">New User</RadioButton>
-                <Separator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="3"/>
+                <RadioButton GroupName="Login" x:Name="IsLogin" Grid.Column="0" Margin="34,3,0,3" HorizontalAlignment="Left" IsChecked="True" Checked="RadioButton_Checked" Grid.ColumnSpan="2">Login</RadioButton>
+                <RadioButton GroupName="Login" Grid.Column="2" Margin="0,3,0,3" HorizontalAlignment="Center" Checked="RadioButton_Checked">New User</RadioButton>
+                <Separator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="3,3,3,3"/>
 
-                <Label x:Name="BoxPrompt1" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Center">UserID: </Label>
-                <TextBox x:Name="BoxInput1" Grid.Column="1" Grid.Row="2" Margin="3"></TextBox>
+                <Label x:Name="BoxPrompt1" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="0,0,0,26" Grid.RowSpan="2">UserID:</Label>
+                <TextBox x:Name="BoxInput1" Grid.Column="2" Grid.Row="2" Margin="3,3,3,3"></TextBox>
 
-                <Label x:Name="BoxPrompt2" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Center" Visibility="Hidden">FirstName:</Label>
-                <TextBox x:Name="BoxInput2" Grid.Column="1" Grid.Row="3" Margin="3" Visibility="Hidden"></TextBox>
+                <Label x:Name="BoxPrompt2" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Center" Visibility="Hidden" Grid.ColumnSpan="2" Margin="0,0,0,26" Grid.RowSpan="2">FirstName:</Label>
+                <TextBox x:Name="BoxInput2" Grid.Column="2" Grid.Row="3" Margin="3,3,3,3" Visibility="Hidden"></TextBox>
 
-                <Label x:Name="BoxPrompt3" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Center" Visibility="Hidden">LastName:</Label>
-                <TextBox x:Name="BoxInput3" Grid.Column="1" Grid.Row="4" Margin="3" Visibility="Hidden"></TextBox>
-
-
+                <Label x:Name="BoxPrompt3" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Center" Visibility="Hidden" Grid.ColumnSpan="2" Margin="0,0,0,26" Grid.RowSpan="2">LastName:</Label>
+                <TextBox x:Name="BoxInput3" Grid.Column="2" Grid.Row="4" Margin="3,3,3,3" Visibility="Hidden"></TextBox>
 
 
-                <Button x:Name="UIButton" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Margin="3" Click="UIButton_Click">Login</Button>
 
 
-                <Label x:Name="UserResponse" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="3"></Label>
+                <Button x:Name="UIButton" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3" Margin="3,3,3,3" Click="UIButton_Click">Login</Button>
+
+
+                <Label x:Name="UserResponse" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="3,3,3,3"></Label>
             </Grid>
         </GroupBox>
+
+
+        <GroupBox x:Name="PlayerInfoBox" Visibility="Hidden" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"  Margin="3">
+            <GroupBox.Header>
+                <Bold>
+                    Player
+                </Bold>
+            </GroupBox.Header>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0">PlayerID:</Label>
+                <Label Grid.Column="0" Grid.Row="1">Code Name:</Label>
+                <Label Grid.Column="0" Grid.Row="3">First Name:</Label>
+                <Label Grid.Column="0" Grid.Row="4">Last Name:</Label>
+                <Label Grid.Column="0" Grid.Row="5">Total Score:</Label>
+
+                <Label Grid.Column="1" Grid.Row="0" Content="{Binding playerID}"/>
+                <Label Grid.Column="1" Grid.Row="1" Content="{Binding codeName}"/>
+                <Label Grid.Column="1" Grid.Row="3" Content="{Binding firstName}"/>
+                <Label Grid.Column="1" Grid.Row="4" Content="{Binding lastName}"/>
+                <Label Grid.Column="1" Grid.Row="5" Content="{Binding totalScore}"/>
+
+                <Button Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" Margin="3" Click="SwitchTeamButton_Click">Switch Teams</Button>
+
+            </Grid>
+        </GroupBox>
+
+
+        <TabControl x:Name="GameControl" IsEnabled="False" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="3">
+            <TabItem x:Name="GameTeamsTab">
+                <TabItem.Header>
+                    <Bold>
+                        Teams
+                    </Bold>
+                </TabItem.Header>
+
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="3">
+                        <GroupBox.Header>
+                            <Bold>Red Team</Bold>
+                        </GroupBox.Header>
+
+                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding redPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Score" Width=".5*" Binding="{Binding Path=score}" IsReadOnly="True"/>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </GroupBox>
+
+                    <GroupBox Grid.Row="1" Grid.Column="2" Margin="3">
+                        <GroupBox.Header>
+                            <Bold>Blue Team</Bold>
+                        </GroupBox.Header>
+
+
+                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding bluePlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Score" Width=".5*" Binding="{Binding Path=score}" IsReadOnly="True"/>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </GroupBox>
+
+
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="GameActionTab">
+                <TabItem.Header>
+                    <Bold>
+                        Game Action
+                    </Bold>
+                </TabItem.Header>
+
+            </TabItem>
+
+        </TabControl>
+
+
+
+
 
 
     </Grid>

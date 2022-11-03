@@ -26,6 +26,11 @@ using System.IO;
 using Path = System.IO.Path;
 using System.Windows.Threading;
 using System.Threading;
+using System.Timers;
+using Timer = System.Timers.Timer;
+using static CSCE3513_LaserTag_Project.Messages.MessageManager;
+using System.Windows.Markup;
+using System.Numerics;
 
 namespace CSCE3513_LaserTag_Project.Views
 {
@@ -44,6 +49,13 @@ namespace CSCE3513_LaserTag_Project.Views
         public static ServerConfigs Configs => _AppConfigs?.Data;
         public static SharedPersistent<ServerConfigs> _AppConfigs;
         public static Dispatcher serverDispatch;
+        public static Timer gameTimer = new Timer(1000);
+        public static DateTime gameStop;
+
+        public List<int> allClientPorts;
+
+        //We use this for simple countdown variable
+        private double remainderSeconds = 0;
 
         private static Logger log;
 
@@ -56,6 +68,7 @@ namespace CSCE3513_LaserTag_Project.Views
             //Set the UI datacontext to this class
             this.DataContext = Configs;
             this.ContentRendered += ServerWindow_ContentRendered;
+            allClientPorts = new List<int>();
 
             InitializeComponent();
         }
@@ -124,32 +137,62 @@ namespace CSCE3513_LaserTag_Project.Views
             ConsoleText.ScrollToEnd();
         }
 
-
-
-
-
         //This function is called when we recieve data on the server!
         private void serverRecieved(MessageManager data)
         {
             log.Info($"ServerRecieved: {data.type}");
-            switch (data.type)
+
+            Dispatcher.Invoke(() =>
             {
-                case MessageManager.messageType.LoginRequest:
-                    loginRequest(data);
-                    break;
+                switch (data.type)
+                {
+                    case MessageManager.messageType.LoginRequest:
+                        loginRequest(data);
+                        break;
 
-                case MessageManager.messageType.GameState:
+                    case MessageManager.messageType.GameState:
 
-                    break;
+                        break;
+
+                    //new player joined or switch team request
+                    case MessageManager.messageType.newPlayerActivated:
+                        switchTeam(data);
+                        break;
 
 
 
-                default:
-                    log.Info("Unkown network type!");
-                    break;
+                    default:
+                        log.Info("Unkown network type!");
+                        break;
 
-            }
+                }
+            });
         }
+
+        private void switchTeam(MessageManager data)
+        {
+            newPlayerActivated r = Utils.Utilities.Deserialize<newPlayerActivated>(data.messageData);
+
+            Configs.redPlayers.Remove(r.players[0].player);
+            Configs.bluePlayers.Remove(r.players[0].player);
+
+            if (r.players[0].team == MessageManager.Team.Red)
+            {
+                Configs.redPlayers.Add(r.players[0].player);
+            }
+            else
+            {
+                Configs.bluePlayers.Add(r.players[0].player);
+            }
+
+            log.Info($"{r.players[0].player.codename} switched to {r.players[0].team} team!");
+
+            updateAllTeams();
+        }
+
+
+
+
 
         public void autoJoinTeam(PlayerItem player)
         {
@@ -158,10 +201,12 @@ namespace CSCE3513_LaserTag_Project.Views
             if (Configs.redPlayers.Count == 0)
             {
                 Configs.redPlayers.Add(player);
+                updateAllTeams();
                 return;
             }
 
-            if(Configs.redPlayers.Count > Configs.bluePlayers.Count)
+
+            if (Configs.redPlayers.Count > Configs.bluePlayers.Count)
             {
                 Configs.bluePlayers.Add(player);
             }
@@ -169,8 +214,42 @@ namespace CSCE3513_LaserTag_Project.Views
             {
                 Configs.redPlayers.Add(player);
             }
-            
+
+
+            updateAllTeams();
         }
+
+        public void updateAllTeams()
+        {
+            newPlayerActivated act = new newPlayerActivated();
+        
+
+            foreach(var player in Configs.redPlayers)
+            {
+                playerTeam t = new playerTeam();
+                t.player = player;
+                t.team = Team.Red;
+
+                act.players.Add(t);
+            }
+
+            foreach(var player in Configs.bluePlayers)
+            {
+                playerTeam t = new playerTeam();
+                t.player = player;
+                t.team = Team.Blue;
+
+                act.players.Add(t);
+            }
+
+
+            log.Info($"Sending player joined to all {allClientPorts.Count} clients!");
+            foreach (var client in allClientPorts)
+            {
+                MessageManager.sendMessage(act, MessageManager.messageType.newPlayerActivated, client);
+            }
+        }
+
         public async void loginRequest(MessageManager data)
         {
             LoginRequest r = Utils.Utilities.Deserialize<LoginRequest>(data.messageData);
@@ -190,22 +269,104 @@ namespace CSCE3513_LaserTag_Project.Views
                 r.response = $"Player of id:{r.playerID} does not exsist!";
                 r.foundAccount = false;
 
-            } else if (r.loggingIn && foundAccount)
+            }
+            else if (r.loggingIn && foundAccount)
             {
+                //Add this client into all clients. (They successfully logged in)
+                log.Warn($"Added {data.listenerPort} to all client ports!");
+                allClientPorts.Add(data.listenerPort);
 
                 r.response = $"Welcome {tableOut.codename}! F:{tableOut.first_name} L:{tableOut.last_name}";
-                this.Dispatcher.Invoke(() => autoJoinTeam(tableOut));
+                r.foundAccount = true;
+                r.firstname = tableOut.first_name;
+                r.lastname = tableOut.last_name;
+                r.username = tableOut.codename;
+                r.score = tableOut.score.ToString();
+
+                autoJoinTeam(tableOut);
+
             }
-            else if(!r.loggingIn)
+            else if (!r.loggingIn)
             {
                 int randNum = rand.Next(100000, 999999);
                 await conn.addPlayer(randNum.ToString(), r.username, r.firstname, r.lastname, 0, true);
 
+                r.playerID = randNum.ToString();
+                r.score = "0";
                 r.response = $"User created with ID {randNum}!";
+
+                allClientPorts.Add(data.listenerPort);
+                autoJoinTeam(tableOut);
             }
 
             MessageManager.sendMessage(r, MessageManager.messageType.LoginRequest, data.listenerPort);
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            log.Warn($"User pressed {e.Key}");
+
+            if (e.Key == Key.F3)
+                startGame();
+            else if (e.Key == Key.F4)
+                stopGame();
+        }
+
+        private void StartGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            startGame();
+        }
+
+        private void StopGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            stopGame();
+        }
+
+        private void stopGame()
+        {
+            try
+            {
+                gameTimer.Elapsed -= GameTimer_Elapsed;
+                gameTimer.Stop();
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                Configs.updateClock();
+            }
+        }
+
+        private void startGame()
+        {
+            gameTimer.Elapsed += GameTimer_Elapsed;
+
+            remainderSeconds = Configs.timeLimit * 60 - 1;
+
+            //use UTC if we are communicating across timezones (personal experience)
+            gameStop = DateTime.Now.AddMinutes(Configs.timeLimit);
+            gameTimer.Start();
+
+
+
+        }
+        private void GameTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (gameStop < DateTime.Now)
+            {
+                gameTimer.Stop();
+                gameTimer.Elapsed -= GameTimer_Elapsed;
+            }
+
+            TimeSpan remainderTime = TimeSpan.FromSeconds(remainderSeconds);
+            Configs.updateClock(remainderTime);
+
+            remainderSeconds--;
+        }
+
+
     }
 
 

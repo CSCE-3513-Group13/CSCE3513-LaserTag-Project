@@ -35,6 +35,8 @@ namespace CSCE3513_LaserTag_Project.Utils
             Dispose();
         }
 
+        public SharedPersistent(T data = default) { Data = data; }
+
         public SharedPersistent(string path, T data = default)
         {
             Path = path;

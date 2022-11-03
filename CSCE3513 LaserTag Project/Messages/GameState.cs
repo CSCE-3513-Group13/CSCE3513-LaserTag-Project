@@ -26,7 +26,7 @@ namespace CSCE3513_LaserTag_Project.Messages
         [ProtoMember(600)]
         public DateTime End;
 
-        //bool game state (active/inactive)
+        //bool game state (Start/Stop)
         [ProtoMember(700)]
         public bool State;
 

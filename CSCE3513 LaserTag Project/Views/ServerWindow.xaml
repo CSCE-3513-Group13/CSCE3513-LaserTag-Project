@@ -5,12 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSCE3513_LaserTag_Project.Views"
         mc:Ignorable="d"
-        Title="ServerWindow" Height="450" Width="800">
+        Title="ServerWindow" Height="450" Width="800" KeyDown="Window_KeyDown">
     <Grid Margin="3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+           
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,13 +22,19 @@
         <Label Grid.Row="0" Grid.Column="0">Controls all functions related to the game </Label>
 
         <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
+                <Run Text="Logged in Players: ["/>
+                <Run Text="{Binding loggedInCount}"/>
+                <Run Text="]"/>
+        </TextBlock>
+
+        <TextBlock  Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
                 <Run Text="Game Timer: ["/>
                 <Run Text="{Binding timer}"/>
                 <Run Text="]"/>
         </TextBlock>
 
 
-        <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+        <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6">
             <TabItem Header="Logs">
                 <RichTextBox x:Name="ConsoleText" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" IsReadOnly="True" Background="#0c0c0c"/>
             </TabItem>
@@ -57,8 +65,8 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" Width="120" Margin="3">Start Game (F3)</Button>
-                        <Button Grid.Column="1" Width="120" Margin="3">Stop Game (F4)</Button>
+                        <Button Grid.Column="0" Width="120" Margin="3" Click="StartGameButton_Click">Start Game (F3)</Button>
+                        <Button Grid.Column="1" Width="120" Margin="3" Click="StopGameButton_Click">Stop Game (F4)</Button>
 
                         <Button Grid.Column="2" Width="150" Margin="3">Switch Selected Player</Button>
 
@@ -71,7 +79,7 @@
                             <Bold>Red Team</Bold>
                         </GroupBox.Header>
 
-                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
+                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding redPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
@@ -89,8 +97,8 @@
                             <Bold>Blue Team</Bold>
                         </GroupBox.Header>
 
-                        
-                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding allPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
+
+                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding bluePlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
