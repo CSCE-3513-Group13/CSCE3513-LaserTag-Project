@@ -212,6 +212,7 @@
     <Content Include="bin\Debug\CSCE3513 LaserTag Project.pdb" />
     <Content Include="bin\Debug\EntityFramework.dll" />
     <Content Include="bin\Debug\EntityFramework.SqlServer.dll" />
+    <Resource Include="Data\LaunchScreen_Background.jpeg" />
     <Resource Include="bin\Debug\EntityFramework.SqlServer.xml" />
     <Resource Include="bin\Debug\EntityFramework.xml" />
     <Content Include="bin\Debug\EntityFramework6.Npgsql.dll" />
