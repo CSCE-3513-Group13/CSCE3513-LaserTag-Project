@@ -117,7 +117,7 @@
         </GroupBox>
 
 
-        <TabControl x:Name="GameControl" IsEnabled="False" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="3">
+        <TabControl x:Name="GameControl" IsEnabled="False" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="3" BorderBrush="{x:Null}">
             <TabItem x:Name="GameTeamsTab">
                 <TabItem.Header>
                     <Bold>
@@ -126,7 +126,7 @@
                 </TabItem.Header>
 
 
-                <Grid>
+                <Grid Background="Black">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -138,9 +138,9 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="3">
+                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="3" BorderBrush="Red" Foreground="{x:Null}">
                         <GroupBox.Header>
-                            <Bold>Red Team</Bold>
+                            <Bold Foreground="Red">Red Team</Bold>
                         </GroupBox.Header>
 
                         <DataGrid x:Name="redPlayers" ItemsSource="{Binding redPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
@@ -153,9 +153,9 @@
 
                     </GroupBox>
 
-                    <GroupBox Grid.Row="1" Grid.Column="2" Margin="3">
+                    <GroupBox Grid.Row="1" Grid.Column="2" Margin="3" BorderBrush="#FF0081FF">
                         <GroupBox.Header>
-                            <Bold>Blue Team</Bold>
+                            <Bold Foreground="#FF0081FF">Blue Team</Bold>
                         </GroupBox.Header>
 
 

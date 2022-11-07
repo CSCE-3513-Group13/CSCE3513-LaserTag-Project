@@ -141,7 +141,7 @@ namespace CSCE3513_LaserTag_Project.Views
                         break;
 
                     default:
-                        Console.WriteLine("Unkown network type!");
+                        Console.WriteLine("Unknown network type!");
                         break;
 
                 }

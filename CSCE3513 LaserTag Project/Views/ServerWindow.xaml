@@ -12,14 +12,14 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-           
+
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0">Controls all functions related to the game </Label>
+        <Label Grid.Row="0" Grid.Column="0">Controls all functions related to the game</Label>
 
         <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
                 <Run Text="Logged in Players: ["/>
@@ -38,9 +38,9 @@
             <TabItem Header="Logs">
                 <RichTextBox x:Name="ConsoleText" VerticalScrollBarVisibility="Visible" FontFamily="Consolas" IsReadOnly="True" Background="#0c0c0c"/>
             </TabItem>
-            
+
             <TabItem Header="GameState">
-                <Grid>
+                <Grid Background="Black">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -73,13 +73,13 @@
                         <Label Grid.Column="4">Countdown:</Label>
                         <Label x:Name="Clock" Grid.Column="5"></Label>
                     </Grid>
-                    
-                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="3">
+
+                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="3" Foreground="{x:Null}" BorderBrush="Red">
                         <GroupBox.Header>
-                            <Bold>Red Team</Bold>
+                            <Bold Foreground="Red">Red Team</Bold>
                         </GroupBox.Header>
 
-                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding redPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
+                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding redPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3" Background="{x:Null}" BorderBrush="Black">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
@@ -92,13 +92,13 @@
 
                     </GroupBox>
 
-                    <GroupBox Grid.Row="1" Grid.Column="2" Margin="3">
+                    <GroupBox Grid.Row="1" Grid.Column="2" Margin="3" Foreground="{x:Null}" BorderBrush="#FF0081FF">
                         <GroupBox.Header>
-                            <Bold>Blue Team</Bold>
+                            <Bold Foreground="#FF0081FF">Blue Team</Bold>
                         </GroupBox.Header>
 
 
-                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding bluePlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
+                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding bluePlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3" BorderBrush="#FF0081FF" Background="{x:Null}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="PlayerID" Width="*" Binding="{Binding Path=playerID}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
@@ -114,17 +114,18 @@
                 </Grid>
             </TabItem>
 
-            
+
             <TabItem Header="GameAction">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="13*"/>
+                        <ColumnDefinition Width="184*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Row="0" Grid.Column="0">
+                    <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                         <GroupBox.Header>
                             <Bold>Red</Bold>
                         </GroupBox.Header>
@@ -162,7 +163,7 @@
                                 Game configs can be adjusted before game start. These settings are saved into the LaserTag.cfg file. Any changes to networking configs
                                 <Bold>must</Bold> be followed by a application
                                 restart for the changes to take effect.
-                                
+
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
@@ -259,8 +260,8 @@
 
                 </Grid>
 
-                
-                
+
+
             </TabItem>
 
             <TabItem Header="All Players Database">
@@ -275,7 +276,7 @@
 
                     </DataGrid.Columns>
                 </DataGrid>
-                
+
             </TabItem>
 
 
