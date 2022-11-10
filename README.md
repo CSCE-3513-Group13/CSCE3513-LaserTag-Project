@@ -1,6 +1,6 @@
 # CSCE3513 LaserTag Project
 
-To run:
+## To run the application:
 
 You can either directly run the .exe files in the specified folders (windows only):
 
@@ -14,6 +14,19 @@ you can download and install MS visual studio (include .NET desktop development)
 Link: https://visualstudio.microsoft.com/vs/community/
 
 This was written in c# .net 4.8 and only works on windows machines.
-Let me know if you have any issues.
+
+
+## To use the application:
+
+This application requires you to launch it atleast twice and click the server, and client respecitvely. In our case, the server is the master/controlling node where you launch and start the game, change configs etc. The client window lets you login with your ID or create a new user to be added to the SQL database.
+
+When a client joins, it automatically gets assigned a team to autobalance them (Red or Blue). The client has the ability to switch teams on demand before the game has started. When ready, on the server window, you can either click the start or stop game buttons, or use the designated function keys. The client window then automatically switches to the game action window where colored logs will appear for damage delt.
+
+On the server, there is also a generator tab that will let you simulate network traffic to do damage on a random basis.
+
+## Issues:
+
+Things to note is that there is no heartbeat or callback system in place to determine if the client has left. Therefore to reset the game in its entirety, you must close all windows and restart.
+
 
 
