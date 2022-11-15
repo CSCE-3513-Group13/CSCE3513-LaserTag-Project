@@ -51,7 +51,7 @@ namespace CSCE3513_LaserTag_Project.Views
 
             listener = new NetworkListener(clientRecieved);
             Sender = new NetworkSender();
-
+            gameTimer.Elapsed += GameTimer_Elapsed;
             Configs.timer = "WAITING FOR START";
 
             testFlow();
@@ -154,11 +154,12 @@ namespace CSCE3513_LaserTag_Project.Views
             GameState r = Utils.Utilities.Deserialize<GameState>(data.messageData);
 
 
+
             //If state is true, we are starting game
             if (r.State)
             {
                 GameControl.SelectedIndex = 1;
-                gameTimer.Elapsed += GameTimer_Elapsed;
+                //gameTimer.Elapsed += GameTimer_Elapsed;
 
                 TimeSpan time =  r.End - r.Start;
 
@@ -170,7 +171,7 @@ namespace CSCE3513_LaserTag_Project.Views
             else
             {
                 GameControl.SelectedIndex = 0;
-                gameTimer.Elapsed -= GameTimer_Elapsed;
+                //gameTimer.Elapsed -= GameTimer_Elapsed;
                 Configs.timer = "WAITING FOR START";
 
                 gameTimer.Stop();
@@ -207,7 +208,6 @@ namespace CSCE3513_LaserTag_Project.Views
             if (gameStop < DateTime.Now)
             {
                 gameTimer.Stop();
-                gameTimer.Elapsed -= GameTimer_Elapsed;
             }
 
             TimeSpan remainderTime = TimeSpan.FromSeconds(remainderSeconds);
