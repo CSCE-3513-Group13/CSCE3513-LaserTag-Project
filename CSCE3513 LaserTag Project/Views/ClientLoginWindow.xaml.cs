@@ -252,20 +252,7 @@ namespace CSCE3513_LaserTag_Project.Views
             else if (r.loggingIn == true && r.foundAccount)
             {
                 //Logged in
-
                 UserResponse.Content = r.response;
-                ClientLoginBox.Visibility = Visibility.Hidden;
-                PlayerInfoBox.Visibility = Visibility.Visible;
-                GameControl.IsEnabled = true;
-
-                Configs.playerID = r.playerID;
-                Configs.codeName = r.username;
-                Configs.firstName = r.firstname;
-                Configs.lastName = r.lastname;
-                Configs.totalScore = r.score;
-                clientID = r.playerID;
-
-
 
 
             }
@@ -276,18 +263,8 @@ namespace CSCE3513_LaserTag_Project.Views
             else if (r.loggingIn == false && !r.foundAccount)
             {
                 //Created new account
-
                 UserResponse.Content = r.response;
-                ClientLoginBox.Visibility = Visibility.Hidden;
-                PlayerInfoBox.Visibility = Visibility.Visible;
-                GameControl.IsEnabled = true;
 
-                Configs.playerID = r.playerID;
-                Configs.codeName = r.username;
-                Configs.firstName = r.firstname;
-                Configs.lastName = r.lastname;
-                Configs.totalScore = r.score;
-                clientID = r.playerID;
 
             }
         }
@@ -296,6 +273,8 @@ namespace CSCE3513_LaserTag_Project.Views
         {
             PlayerItem foundplayer;
             Team newTeam;
+
+
 
             foundplayer = Configs.redPlayers.FirstOrDefault(x => x.playerID == clientID);
             newTeam = Team.Blue;
