@@ -20,9 +20,11 @@ This was written in c# .net 4.8 and only works on windows machines.
 
 This application requires you to launch it atleast twice and click the server, and client respecitvely. In our case, the server is the master/controlling node where you launch and start the game, change configs etc. The client window lets you login with your ID or create a new user to be added to the SQL database.
 
-When a client joins, it automatically gets assigned a team to autobalance them (Red or Blue). The client has the ability to switch teams on demand before the game has started. When ready, on the server window, you can either click the start or stop game buttons, or use the designated function keys. The client window then automatically switches to the game action window where colored logs will appear for damage delt.
+When a client joins, it automatically gets assigned a team to autobalance them (Red or Blue). When ready, on the server window, you can either click the start or stop game buttons, or use the designated function keys. The client window then automatically switches to the game action window where colored logs will appear for damage delt. You can also connect up many different client windows if you want. On run, the game traffic simulator automatically runs upon start.
 
-On the server, there is also a generator tab that will let you simulate network traffic to do damage on a random basis.
+The score, and game feed will be displayed on both the server and client.
+
+
 
 ## Issues:
 
