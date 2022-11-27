@@ -53,9 +53,6 @@ namespace CSCE3513_LaserTag_Project.Views
             Sender = new NetworkSender();
             gameTimer.Elapsed += GameTimer_Elapsed;
             Configs.timer = "WAITING FOR START";
-
-            testFlow();
-
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
@@ -140,12 +137,46 @@ namespace CSCE3513_LaserTag_Project.Views
                         newPlayerActivated(data);
                         break;
 
+                    case messageType.GameAction:
+                        gameActionRecieved(data);
+                        break;
+
+                       
+
                     default:
                         Console.WriteLine("Unknown network type!");
                         break;
 
                 }
 
+            });
+        }
+
+
+        SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
+        SolidColorBrush RedBrush = new SolidColorBrush(Colors.Red);
+        private void gameActionRecieved(MessageManager data)
+        {
+            GameAction r = Utils.Utilities.Deserialize<GameAction>(data.messageData);
+
+            Run run = new Run();
+
+            run.Text = r.action;
+           
+            if (r.cType == GameAction.colorType.red)
+            {
+                run.Foreground = RedBrush;
+            }
+            else
+            {
+                run.Foreground = BlueBrush;
+            }
+
+            Dispatcher.Invoke(() => { 
+            RedFlow.Blocks.Add(new Paragraph(run));
+            Configs.RedScore = r.redScore;
+            Configs.BlueScore = r.blueScore;
+            FeedBox.ScrollToEnd();
             });
         }
 
@@ -173,34 +204,20 @@ namespace CSCE3513_LaserTag_Project.Views
                 GameControl.SelectedIndex = 0;
                 //gameTimer.Elapsed -= GameTimer_Elapsed;
                 Configs.timer = "WAITING FOR START";
-
                 gameTimer.Stop();
+            }
+
+            if (r.Reset)
+            {
+                Configs.redPlayers.Clear();
+                Configs.bluePlayers.Clear();
+
+                GameControl.SelectedIndex = 0;
             }
 
         }
 
-        private void testFlow()
-        {
-            SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
-            SolidColorBrush RedBrush = new SolidColorBrush(Colors.Red);
 
-            Run run1 = new Run();
-            Run run2 = new Run();
-            Run run3 = new Run();
-
-            run1.Text = "SoSo hit SoSo";
-            run1.Foreground = RedBrush;
-
-            run2.Text = "Paragraph 2 with a blue brush";
-            run2.Foreground = BlueBrush;
-
-            run3.Text = "Paragraph 3 and back to a red brush";
-            run3.Foreground = RedBrush;
-            // Add paragraphs to the FlowDocument.
-            RedFlow.Blocks.Add(new Paragraph(run1));
-            RedFlow.Blocks.Add(new Paragraph(run2));
-            RedFlow.Blocks.Add(new Paragraph(run3));
-        }
 
 
         private void GameTimer_Elapsed(object sender, ElapsedEventArgs e)

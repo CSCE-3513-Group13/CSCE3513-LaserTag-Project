@@ -121,6 +121,7 @@
     <Compile Include="Configs\ClientConfigs.cs" />
     <Compile Include="Configs\ServerConfigs.cs" />
     <Compile Include="Configs\SharedViewModel.cs" />
+    <Compile Include="Messages\GameAction.cs" />
     <Compile Include="Messages\GameState.cs" />
     <Compile Include="Messages\LoginRequest.cs" />
     <Compile Include="Messages\MessageManager.cs" />

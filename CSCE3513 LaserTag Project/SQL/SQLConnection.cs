@@ -37,7 +37,7 @@ namespace CSCE3513_LaserTag_Project.SQL
 
         private void SQLManager_newPlayer(object sender, PlayerItem e)
         {
-            log.Info($"Added Player {e.codename}!");
+            //log.Info($"Added Player {e.codename}!");
             ServerWindow.Configs.AddPlayer(e);
         }
 

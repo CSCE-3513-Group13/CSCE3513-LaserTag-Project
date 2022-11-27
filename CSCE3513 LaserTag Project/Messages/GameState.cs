@@ -30,5 +30,8 @@ namespace CSCE3513_LaserTag_Project.Messages
         [ProtoMember(700)]
         public bool State;
 
+        [ProtoMember(800)]
+        public bool Reset;
+
     }
 }

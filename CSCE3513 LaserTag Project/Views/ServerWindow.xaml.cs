@@ -44,6 +44,8 @@ namespace CSCE3513_LaserTag_Project.Views
         private NetworkSender sender;
 
         private Random rand = new Random((int)DateTime.Now.Ticks);
+
+
         public static string ApplicationLocation { get { return AppDomain.CurrentDomain.BaseDirectory; } }
 
         public static ServerConfigs Configs => _AppConfigs?.Data;
@@ -86,31 +88,10 @@ namespace CSCE3513_LaserTag_Project.Views
             log = LogManager.GetCurrentClassLogger();
             log.Warn("Welcome to the CSCE LaserTag Server!");
 
-            testFlow();
+            //testFlow();
         }
 
-        private void testFlow()
-        {
-            SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
-            SolidColorBrush RedBrush = new SolidColorBrush(Colors.Red);
 
-            Run run1 = new Run();
-            Run run2 = new Run();
-            Run run3 = new Run();
-
-            run1.Text = "Paragraph 1 with a red brush";
-            run1.Foreground = RedBrush;
-
-            run2.Text = "Paragraph 2 with a blue brush";
-            run2.Foreground = BlueBrush;
-
-            run3.Text = "Paragraph 3 and back to a red brush";
-            run3.Foreground = RedBrush;
-            // Add paragraphs to the FlowDocument.
-            RedFlow.Blocks.Add(new Paragraph(run1));
-            RedFlow.Blocks.Add(new Paragraph(run2));
-            RedFlow.Blocks.Add(new Paragraph(run3));
-        }
 
         private SharedPersistent<ServerConfigs> LoadConfigs()
         {
@@ -169,13 +150,13 @@ namespace CSCE3513_LaserTag_Project.Views
             });
         }
 
-        private void signalGameState(bool state)
+        private void signalGameState(bool state, bool reset = false)
         {
             GameState gstate = new GameState();
             gstate.Start = DateTime.Now;
             gstate.End = gameStop;
             gstate.State = state;
-
+            gstate.Reset = reset;
 
             log.Warn($"Signaling game state to {state}!");
             foreach (var client in allClientPorts)
@@ -183,6 +164,7 @@ namespace CSCE3513_LaserTag_Project.Views
                 MessageManager.sendMessage(gstate, MessageManager.messageType.GameState, client);
             }
         }
+
 
         private void switchTeam(MessageManager data)
         {
@@ -289,7 +271,10 @@ namespace CSCE3513_LaserTag_Project.Views
             {
                 //Add this client into all clients. (They successfully logged in)
                 log.Warn($"Added {data.listenerPort} to all client ports!");
-                allClientPorts.Add(data.listenerPort);
+
+                //If this client hasnt joined, add them to all of our client lists
+                if(!allClientPorts.Contains(data.listenerPort))
+                    allClientPorts.Add(data.listenerPort);
 
                 r.response = $"Welcome {tableOut.codename}! F:{tableOut.first_name} L:{tableOut.last_name}";
                 r.foundAccount = true;
@@ -334,10 +319,15 @@ namespace CSCE3513_LaserTag_Project.Views
 
         private void StopGameButton_Click(object sender, RoutedEventArgs e)
         {
-            stopGame();
+            stopGame(true);
+
+
+            //Resets players
+            Configs.redPlayers.Clear();
+            Configs.bluePlayers.Clear();
         }
 
-        private void stopGame()
+        private void stopGame(bool reset = false)
         {
             try
             {
@@ -351,7 +341,7 @@ namespace CSCE3513_LaserTag_Project.Views
             finally
             {
                 Configs.updateClock();
-                signalGameState(false);
+                signalGameState(false, reset);
             }
         }
 
@@ -370,6 +360,8 @@ namespace CSCE3513_LaserTag_Project.Views
         }
         private void GameTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            
+
             if (gameStop < DateTime.Now)
             {
                 gameTimer.Stop();
@@ -379,6 +371,16 @@ namespace CSCE3513_LaserTag_Project.Views
                 return;
             }
 
+            //possibly try catch
+            try
+            {
+                Dispatcher.Invoke(() => { networkGenerator(); });
+            }catch(Exception ex)
+            {
+                log.Error(ex);
+            }
+
+
             TimeSpan remainderTime = TimeSpan.FromSeconds(remainderSeconds);
             Configs.updateClock(remainderTime);
 
@@ -386,6 +388,61 @@ namespace CSCE3513_LaserTag_Project.Views
         }
 
 
+
+        SolidColorBrush BlueBrush = new SolidColorBrush(Colors.Blue);
+        SolidColorBrush RedBrush = new SolidColorBrush(Colors.Red);
+        private void networkGenerator()
+        {
+            double rTeam = rand.NextDouble();
+
+
+            PlayerItem red = null; //who fired
+            PlayerItem blue = null; //who got hit
+
+
+            int randomRedIndex = rand.Next(0, Configs.redPlayers.Count);
+            red = Configs.redPlayers[randomRedIndex];
+
+            int randomBlueIndex = rand.Next(0, Configs.bluePlayers.Count);
+            blue = Configs.bluePlayers[randomBlueIndex];
+
+
+            int damageDelt = rand.Next(1, Configs.playerDamage);
+
+            
+
+            Run run = new Run();
+           
+
+            GameAction a = null;
+            if (rTeam > .5)
+            {
+                //Red team hit blue team
+                string response = $"{red.codename} hit {blue.codename} for {damageDelt}";
+                run.Text = response;
+                run.Foreground = RedBrush;
+                Configs.RedScore += damageDelt;
+                a = new GameAction(response, GameAction.colorType.blue, Configs.RedScore, Configs.BlueScore);
+            }
+            else
+            {
+                //Blue team hit red team
+                string response = $"{blue.codename} hit {red.codename} for {damageDelt}";
+                run.Text = response;
+                run.Foreground = BlueBrush;
+                Configs.BlueScore += damageDelt;
+                a = new GameAction(response, GameAction.colorType.red, Configs.RedScore, Configs.BlueScore);
+            }
+
+            RedFlow.Blocks.Add(new Paragraph(run));
+            FeedBox.ScrollToEnd();
+
+            foreach (var client in allClientPorts)
+            {
+                //log.Info($"Sending to {client}");
+                MessageManager.sendMessage(a, MessageManager.messageType.GameAction, client);
+            }
+        }
     }
 
 

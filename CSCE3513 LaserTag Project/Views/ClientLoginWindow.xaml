@@ -117,7 +117,7 @@
         </GroupBox>
 
 
-        <TabControl x:Name="GameControl" IsEnabled="False" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="3" BorderBrush="{x:Null}">
+        <TabControl x:Name="GameControl" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="3" BorderBrush="{x:Null}">
             <TabItem x:Name="GameTeamsTab">
                 <TabItem.Header>
                     <Bold>
@@ -138,28 +138,35 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="3" BorderBrush="Red" Foreground="{x:Null}">
+
+                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="3" Foreground="{x:Null}" BorderBrush="Red">
                         <GroupBox.Header>
-                            <Bold Foreground="Red">Red Team</Bold>
+                            <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
+                                <Run Text="Red Team - Score [ " Foreground="Red"/>
+                                <Run Text="{Binding RedScore}" Foreground="Red"/>
+                                <Run Text="]" Foreground="Red"/>
+                            </TextBlock>
                         </GroupBox.Header>
 
-                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding redPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
+                        <DataGrid x:Name="redPlayers" ItemsSource="{Binding redPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3" Background="{x:Null}" BorderBrush="Black">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Score" Width=".5*" Binding="{Binding Path=score}" IsReadOnly="True"/>
-
                             </DataGrid.Columns>
                         </DataGrid>
-
                     </GroupBox>
 
-                    <GroupBox Grid.Row="1" Grid.Column="2" Margin="3" BorderBrush="#FF0081FF">
+                    <GroupBox Grid.Row="1" Grid.Column="2" Margin="3" Foreground="{x:Null}" BorderBrush="#FF0081FF">
                         <GroupBox.Header>
-                            <Bold Foreground="#FF0081FF">Blue Team</Bold>
+                            <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
+                                <Run Text="Red Team - Score [ " Foreground="#FF0081FF"/>
+                                <Run Text="{Binding BlueScore}" Foreground="#FF0081FF"/>
+                                <Run Text=" ]" Foreground="#FF0081FF"/>
+                            </TextBlock>
                         </GroupBox.Header>
 
 
-                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding bluePlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3">
+                        <DataGrid x:Name="bluePlayers" ItemsSource="{Binding bluePlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3" BorderBrush="#FF0081FF" Background="{x:Null}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Codename" Width="*" Binding="{Binding Path=codename}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Score" Width=".5*" Binding="{Binding Path=score}" IsReadOnly="True"/>
@@ -173,27 +180,39 @@
                 </Grid>
             </TabItem>
 
-            <TabItem x:Name="GameActionTab">
-                <TabItem.Header>
-                    <Bold>
-                        Game Action
-                    </Bold>
-                </TabItem.Header>
+            <TabItem Header="GameAction">
+                <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="3">
+                    <GroupBox.Header>
+                        <Bold>Live Game Feed</Bold>
+                    </GroupBox.Header>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Row="0" Grid.Column="0">
-                        <GroupBox.Header>
-                            <Bold>Game Action Log</Bold>
-                        </GroupBox.Header>
 
-                        <RichTextBox IsReadOnly="True">
+                        <Label Grid.Row="0" Grid.Column="0" FontSize="18" HorizontalAlignment="Center" Foreground="Red">
+                            <Bold>RED TEAM</Bold>
+                        </Label>
+
+                        <Label Grid.Row="0" Grid.Column="1" FontSize="18" HorizontalAlignment="Center" Foreground="#FF0081FF">
+                            <Bold>BLUE TEAM</Bold>
+                        </Label>
+
+
+                        <Label Grid.Row="1" Grid.Column="0" FontSize="20" HorizontalAlignment="Center" Foreground="Red" Content="{Binding RedScore}"/>
+
+                        <Label Grid.Row="1" Grid.Column="1" FontSize="20" HorizontalAlignment="Center" Foreground="#FF0081FF" Content="{Binding BlueScore}"/>
+
+
+                        <RichTextBox x:Name="FeedBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" IsReadOnly="True" Background="Black" >
                             <RichTextBox.Resources>
                                 <Style TargetType="{x:Type Paragraph}">
                                     <Setter Property="Margin" Value="0"/>
@@ -203,13 +222,16 @@
                             <FlowDocument x:Name="RedFlow">
 
                             </FlowDocument>
+
                         </RichTextBox>
 
-                    </GroupBox>
+                    </Grid>
 
-                </Grid>
 
+
+                </GroupBox>
             </TabItem>
+
 
         </TabControl>
 

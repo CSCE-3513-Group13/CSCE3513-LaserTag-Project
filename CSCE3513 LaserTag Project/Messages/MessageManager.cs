@@ -19,9 +19,10 @@ namespace CSCE3513_LaserTag_Project.Messages
             LoginRequest,
             GameState,
             newPlayerActivated,
-            SwitchTeam
+            SwitchTeam,
+            GameAction
         }
-
+        
         public enum Team
         {
             Red,

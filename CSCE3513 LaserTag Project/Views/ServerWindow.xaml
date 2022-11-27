@@ -19,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0">Controls all functions related to the game</Label>
+        <Label Grid.Row="0" Grid.Column="0">Controls all functions related to the LaserTag game</Label>
 
         <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
                 <Run Text="Logged in Players: ["/>
@@ -29,7 +29,7 @@
 
         <TextBlock  Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
                 <Run Text="Game Timer: ["/>
-                <Run Text="{Binding timer}"/>
+                <Run Text="{Binding timer}" Foreground="Red"/>
                 <Run Text="]"/>
         </TextBlock>
 
@@ -56,6 +56,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -70,13 +71,16 @@
 
                         <Button Grid.Column="2" Width="150" Margin="3">Switch Selected Player</Button>
 
-                        <Label Grid.Column="4">Countdown:</Label>
-                        <Label x:Name="Clock" Grid.Column="5"></Label>
+                        <CheckBox x:Name="StartGeneratorCheckbox" Grid.Column="3" Margin="3" VerticalAlignment="Center" Visibility="Hidden" Foreground="White">Network Generator (on game start)</CheckBox>
                     </Grid>
 
                     <GroupBox Grid.Row="1" Grid.Column="0" Margin="3" Foreground="{x:Null}" BorderBrush="Red">
                         <GroupBox.Header>
-                            <Bold Foreground="Red">Red Team</Bold>
+                            <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
+                                <Run Text="Red Team - Score [ " Foreground="Red"/>
+                                <Run Text="{Binding RedScore}" Foreground="Red"/>
+                                <Run Text="]" Foreground="Red"/>
+                            </TextBlock>
                         </GroupBox.Header>
 
                         <DataGrid x:Name="redPlayers" ItemsSource="{Binding redPlayers}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="3" Background="{x:Null}" BorderBrush="Black">
@@ -89,12 +93,15 @@
 
                             </DataGrid.Columns>
                         </DataGrid>
-
                     </GroupBox>
 
                     <GroupBox Grid.Row="1" Grid.Column="2" Margin="3" Foreground="{x:Null}" BorderBrush="#FF0081FF">
                         <GroupBox.Header>
-                            <Bold Foreground="#FF0081FF">Blue Team</Bold>
+                            <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
+                                <Run Text="Red Team - Score [ " Foreground="#FF0081FF"/>
+                                <Run Text="{Binding BlueScore}" Foreground="#FF0081FF"/>
+                                <Run Text=" ]" Foreground="#FF0081FF"/>
+                            </TextBlock>
                         </GroupBox.Header>
 
 
@@ -116,21 +123,38 @@
 
 
             <TabItem Header="GameAction">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="13*"/>
-                        <ColumnDefinition Width="184*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="3">
+                    <GroupBox.Header>
+                        <Bold>Live Game Feed</Bold>
+                    </GroupBox.Header>
 
-                    <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                        <GroupBox.Header>
-                            <Bold>Red</Bold>
-                        </GroupBox.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                        <RichTextBox IsReadOnly="True">
+
+                        <Label Grid.Row="0" Grid.Column="0" FontSize="18" HorizontalAlignment="Center" Foreground="Red">
+                            <Bold>RED TEAM</Bold>
+                        </Label>
+
+                        <Label Grid.Row="0" Grid.Column="1" FontSize="18" HorizontalAlignment="Center" Foreground="#FF0081FF">
+                            <Bold>BLUE TEAM</Bold>
+                        </Label>
+
+
+                        <Label Grid.Row="1" Grid.Column="0" FontSize="20" HorizontalAlignment="Center" Foreground="Red" Content="{Binding RedScore}"/>
+
+                        <Label Grid.Row="1" Grid.Column="1" FontSize="20" HorizontalAlignment="Center" Foreground="#FF0081FF" Content="{Binding BlueScore}"/>
+
+
+                        <RichTextBox x:Name="FeedBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" IsReadOnly="True" Background="Black">
                             <RichTextBox.Resources>
                                 <Style TargetType="{x:Type Paragraph}">
                                     <Setter Property="Margin" Value="0"/>
@@ -140,11 +164,14 @@
                             <FlowDocument x:Name="RedFlow">
 
                             </FlowDocument>
+
                         </RichTextBox>
 
-                    </GroupBox>
+                    </Grid>
+                    
+                    
 
-                </Grid>
+                </GroupBox>
             </TabItem>
 
             <TabItem Header="Configs">
