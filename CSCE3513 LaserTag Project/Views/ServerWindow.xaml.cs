@@ -342,6 +342,18 @@ namespace CSCE3513_LaserTag_Project.Views
             {
                 Configs.updateClock();
                 signalGameState(false, reset);
+
+                String winnerMessage = ". It's a draw!";
+                if (Configs.RedScore > Configs.BlueScore)
+                {
+                    winnerMessage = ". Red wins!";
+                }
+                else if (Configs.RedScore < Configs.BlueScore)
+                {
+                    winnerMessage = ". Blue wins!";
+                }
+
+                log.Info("Game Over. Red:" + Configs.RedScore + " to Blue:" + Configs.BlueScore + winnerMessage);
             }
         }
 
@@ -383,6 +395,11 @@ namespace CSCE3513_LaserTag_Project.Views
 
             TimeSpan remainderTime = TimeSpan.FromSeconds(remainderSeconds);
             Configs.updateClock(remainderTime);
+
+            if (remainderSeconds == 30)
+            {
+                log.Warn("Warning: 30 seconds remain!");
+            }
 
             remainderSeconds--;
         }
