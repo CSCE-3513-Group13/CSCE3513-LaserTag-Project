@@ -142,6 +142,10 @@
     <Compile Include="Views\ServerWindow.xaml.cs">
       <DependentUpon>ServerWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="ResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ClientLoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -213,7 +217,7 @@
     <Content Include="bin\Debug\CSCE3513 LaserTag Project.pdb" />
     <Content Include="bin\Debug\EntityFramework.dll" />
     <Content Include="bin\Debug\EntityFramework.SqlServer.dll" />
-    <Resource Include="Data\LaunchScreen_Background.jpeg" />
+    <Resource Include="Data\Background.jpeg" />
     <Resource Include="bin\Debug\EntityFramework.SqlServer.xml" />
     <Resource Include="bin\Debug\EntityFramework.xml" />
     <Content Include="bin\Debug\EntityFramework6.Npgsql.dll" />

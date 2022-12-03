@@ -5,12 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CSCE3513_LaserTag_Project.Views"
              mc:Ignorable="d" 
-             Title="Laser Tag Launcher" Height="325" Width="350" ResizeMode="NoResize">
-    
-    <Window.Background>
-        <ImageBrush ImageSource="/data/LaunchScreen_Background.jpeg"></ImageBrush>
-    </Window.Background>
-    
+             Title="Laser Tag Launcher" Height="325" Width="350" ResizeMode="NoResize" Style="{StaticResource windowStyle}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -32,8 +27,8 @@
         <!-- <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="3" HorizontalAlignment="Center"> {Insert logo}</Label> -->
         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="3" HorizontalAlignment="Center" Foreground="White" >Please select if you are a server or client:</Label>
 
-        <Button Grid.Row="3" Grid.Column="0" Margin="6" Background="Transparent" BorderBrush="White" ToolTip="This button lunaches the server mode for clients to connect to" Click="ServerButton_Click" Foreground="White">Server</Button>
-        <Button Grid.Row="3" Grid.Column="1" Margin="6" Background="Transparent" BorderBrush="White" ToolTip="Client mode if you want to join a launched server" Click="ClientButton_Click" Foreground="White">Client</Button>
+        <Button Grid.Row="3" Grid.Column="0" Margin="6" ToolTip="This button lunaches the server mode for clients to connect to" Click="ServerButton_Click">Server</Button>
+        <Button Grid.Row="3" Grid.Column="1" Margin="6" ToolTip="Client mode if you want to join a launched server" Click="ClientButton_Click">Client</Button>
         <!-- <Button Grid.Row="3" Grid.Column="2" Margin="6" ToolTip="debug mode" Click="Button_Click">Debug</Button> -->
 
     </Grid>

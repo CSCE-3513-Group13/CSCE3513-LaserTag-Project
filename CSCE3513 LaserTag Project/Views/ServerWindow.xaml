@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSCE3513_LaserTag_Project.Views"
         mc:Ignorable="d"
-        Title="ServerWindow" Height="450" Width="800" KeyDown="Window_KeyDown">
+        Title="ServerWindow" Height="450" Width="800" KeyDown="Window_KeyDown" Style="{StaticResource windowStyle}">
     <Grid Margin="3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -40,7 +40,7 @@
             </TabItem>
 
             <TabItem Header="GameState">
-                <Grid Background="Black">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
