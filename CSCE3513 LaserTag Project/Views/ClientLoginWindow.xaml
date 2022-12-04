@@ -67,7 +67,7 @@
 
 
 
-                <Button x:Name="UIButton" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3" Margin="3,3,3,3" Click="UIButton_Click">Login</Button>
+                <Button x:Name="UIButton" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3" Margin="3,0,3,3" Click="UIButton_Click" VerticalAlignment="Bottom">Login</Button>
 
 
                 <Label x:Name="UserResponse" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="3,3,3,3"></Label>
