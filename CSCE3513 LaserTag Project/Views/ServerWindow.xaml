@@ -98,7 +98,7 @@
                     <GroupBox Grid.Row="1" Grid.Column="2" Margin="3" Foreground="{x:Null}" BorderBrush="#FF0081FF">
                         <GroupBox.Header>
                             <TextBlock  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="3" HorizontalAlignment="Right">
-                                <Run Text="Red Team - Score [ " Foreground="#FF0081FF"/>
+                                <Run Text="Blue Team - Score [ " Foreground="#FF0081FF"/>
                                 <Run Text="{Binding BlueScore}" Foreground="#FF0081FF"/>
                                 <Run Text=" ]" Foreground="#FF0081FF"/>
                             </TextBlock>
